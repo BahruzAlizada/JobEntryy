@@ -1,0 +1,213 @@
+﻿﻿
+@{
+    ViewData["Title"] = "Şirkətlər";
+}
+@model List<Company>
+
+
+@section Css {
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        section {
+            height: 100vh;
+            width: 100%;
+            display: grid;
+            place-items: center;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            width: 100%;
+            padding: 0 1em 1em 1em;
+            text-align: center;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            padding: 2em 1.5em;
+            background: linear-gradient(#ffffff 50%, #2c7bfe 50%);
+            background-size: 100% 200%;
+            background-position: 0 2.5%;
+            border-radius: 5px;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        h3 a {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f194c;
+            margin: 1em 0;
+        }
+
+        p {
+            color: #575a7b;
+            font-size: 15px;
+            line-height: 1.6;
+            letter-spacing: 0.03em;
+        }
+
+        .icon-wrapper {
+            background-color: #2c7bfe;
+            position: relative;
+            margin: auto;
+            font-size: 30px;
+            height: 2.5em;
+            width: 2.5em;
+            color: #ffffff;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: 0.5s;
+        }
+
+        .card:hover {
+            background-position: 0 100%;
+        }
+
+            .card:hover .icon-wrapper {
+                background-color: #ffffff;
+                color: #2c7bfe;
+            }
+
+            .card:hover h3 a {
+                color: #ffffff;
+            }
+
+            .card:hover p {
+                color: #f0f0f0;
+            }
+
+        @@media screen and (min-width: 768px) {
+            section {
+                padding: 0 2em;
+            }
+
+            .column {
+                flex: 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        @@media screen and (min-width: 992px) {
+            section {
+                padding: 1em 3em;
+            }
+
+            .column {
+                flex: 0 0 33.33%;
+                max-width: 33.33%;
+            }
+        }
+
+    </style>
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <form method="get">
+            <!--Search Start-->
+            <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
+                <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
+                    <input type="search" name="search" id="srch"
+                           class="form-control"
+                           placeholder="Şirkət üzrə axtar..."
+                           aria-label="Şirkət üzrə axtar..."
+                           aria-describedby="basic-addon-search31" />
+                </div>
+                <button type="submit" style="border:none;background-color:transparent;margin-left:2px;">
+                    <span class="input-group-text" style="font-size:21px;height:43px;border-radius:6px;" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                </button>
+            </div>
+            <!--Search End-->
+        </form>
+        <input type="hidden" id="initialSearchValue" value="@ViewBag.SearchName" />
+    </div>
+</div>
+
+
+<div id="myproduct" class="row my-5">
+
+    @foreach (Company item in Model)
+    {
+        <div class="column">
+            <div class="card">
+                <div>
+                    <img src="~/assets/img/company/@item.Image" class=" w-px-40 h-auto rounded-circle">
+                </div>
+                <h3><a asp-controller="Companies" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></h3>
+                @* <p>@item.JobCount vakansiya</p> *@
+                @if (item.IsPremium)
+                {
+                    <div style="display:inline-block;">
+                        <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="col-12 justify-content-center my-4 d-flex">
+        <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+        <input type="hidden" value="@ViewBag.CompanyCount" />
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+
+    <script asp-append-version="true">
+        let skip = 27
+        let productsCount = $("#loadMore").next().val()
+        let initialSearchValue = $("#initialSearchValue").val();
+
+        function checkLoadMore() {
+            if (productsCount <= skip) {
+                $("#loadMore").remove();
+            }
+        }
+
+        $(document).ready(function () {
+            checkLoadMore();
+        });
+
+        $(document).on("click", "#loadMore", function () {
+            var searchValue = $("#srch").val() || initialSearchValue;
+            $.ajax({
+                url: "/Companies/LoadMore/",
+                type: "get",
+                data:
+                {
+                    "skipCount": skip,
+                    "search": searchValue
+                },
+
+                success: function (res) {
+                    $("#myproduct").append(res)
+                    skip += 27;
+
+                    checkLoadMore();
+                }
+            });
+        });
+    </script>
+}

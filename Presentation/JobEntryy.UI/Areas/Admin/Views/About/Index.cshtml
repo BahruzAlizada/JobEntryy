@@ -1,0 +1,37 @@
+﻿@model About
+
+<hr class="my-5" />
+
+<!-- Bordered Table -->
+<div class="card">
+    <div class="card-header" style="display:flex;justify-content:space-between">
+        <p>Haqqımızda</p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Haqqımızda</th>
+                        <th style="text-align:right">Aksiyon</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.Raw(Model.Description)</td>
+
+                        <td>
+                            <div style="display:flex;justify-content:flex-end">
+                                <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary  text-white" style="margin-right:10px;"><i class='bx bxs-pencil'></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<!--/ Bordered Table -->
+
+<hr class="my-5" />

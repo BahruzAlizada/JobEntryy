@@ -1,0 +1,75 @@
+﻿@model List<Faq>
+
+@{
+    ViewData["Title"] = "FAQ";
+    Layout = "_LayoutTwo";
+    int number = 1;
+}
+
+@section Css{
+    <style>
+        .accordion-item{
+            margin:15px 0;
+        }
+
+        .accordion {
+            background-color: white;
+            color: black;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: left;
+            border-radius: 5px;
+            border: 1px solid #dedede;
+            outline: none;
+            transition: all linear .15s;
+            text-shadow: 0 1px 0 #444;
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            display: none;
+            overflow: hidden;
+        }
+
+    </style>
+}
+
+<div class="scrollable-container">
+    <h3 style="text-align:center;margin-bottom:15px;color:black;">Ən Çox Verilən Suallar</h3>
+
+        @foreach (Faq faq in Model)
+        {
+                <div class="accordion-item">
+                    <button class="accordion">@number. @faq.Quetsion</button>
+                    <div class="panel"><p style="color:black; margin-top:8px;">@Html.Raw(faq.Answer)</p></div>
+                </div>
+
+            number++;
+        }
+</div>
+
+
+@section Scripts{
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+}

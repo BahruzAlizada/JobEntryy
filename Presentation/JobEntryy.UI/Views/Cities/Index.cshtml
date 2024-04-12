@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Şəhərlər";
+}
+
+@section Css {
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 0px 8%;
+        }
+
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 30px;
+        }
+
+        .service {
+            text-align: center;
+            padding: 12px 15px;
+            border-radius: 11px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #303ef7;
+            background: transparent;
+            transition: transform 0.5s, background 0.5s;
+        }
+
+            .service a {
+                font-size: 15px;
+                color: black;
+            }
+
+            .service:hover a {
+                color: white;
+                color: white;
+            }
+
+            .service span {
+                font-size: 13px;
+            }
+
+            .service:hover {
+                background: #303ef7;
+                color: #fff;
+                border: 1px solid white;
+            }
+
+
+            .service .spn {
+                color: black;
+            }
+
+            .service:hover .spn {
+                color: #fff;
+            }
+
+    </style>
+}
+
+@model List<City>
+
+
+@* <div class="row">
+    <div class="col-12">
+        <form method="get">
+            <!--Search Start-->
+            <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
+                <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
+                    <input type="search" name="search"
+                           class="form-control"
+                           placeholder="Şəhər üzrə axtar..."
+                           aria-label="Şəhər üzrə axtar..."
+                           aria-describedby="basic-addon-search31" />
+                </div>
+                <button type="submit" style="border:none;background-color:transparent;margin-left:2px;">
+                    <span class="input-group-text" style="font-size:21px;height:43px;border-radius:6px;" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                </button>
+            </div>
+            <!--Search End-->
+        </form>
+    </div>
+</div> *@
+
+<div class="row my-5">
+    @foreach (City item in Model)
+    {
+        <a asp-controller="Home" asp-action="Index" asp-route-cityId="@item.Id">
+            <div style="margin:-11px;" class="service"><span class="spn">@item.Name</span></div>
+        </a>
+    }
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="pagnation my-2">
+            <ul style="list-style:none;display:flex;justify-content:center;">
+                <li class="page-item prev">
+                    <a class="page-link" asp-route-page="page">
+                        <i class="tf-icon bx bx-chevrons-left"></i>
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.PageCount; i++)
+                {
+                    <li class="page-item  @(i == ViewBag.CurrentPage ? "active" : "")"><a class="page-link" asp-action="Index" asp-route-page="@i">@i</a></li>
+                }
+                <li class="page-item next">
+                    <a class="page-link" asp-route-page="@ViewBag.PageCount">
+                        <i class="tf-icon bx bx-chevrons-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+

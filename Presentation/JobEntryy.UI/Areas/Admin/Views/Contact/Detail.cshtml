@@ -1,0 +1,19 @@
+﻿@model  Contact
+
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h6>
+                Email : @Model.Email<br />
+                Ad və Soyad : @Model.FullName
+            </h6>
+            <h6>
+                Mətnin Başlığı : @Model.Subject<br />
+            </h6>
+            <p>Göndərilmə tarixi : @Model.Created</p>
+            <p>@Html.Raw(Model.Message)</p>
+
+            <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+        </div>
+    </div>
+</div>

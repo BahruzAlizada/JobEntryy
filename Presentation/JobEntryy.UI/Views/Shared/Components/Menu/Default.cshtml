@@ -1,0 +1,45 @@
+﻿
+<div class="app-brand demo">
+    <a asp-controller="Home" asp-action="Index" class="app-brand-link" style="font-family: 'Poppins', sans-serif;">
+        <img src="~/assets//img/layouts/job-entryy-high-resolution-logo-transparent.png" style="object-fit:cover; height:30px;width:180px;" />
+@*         <span class="app-brand-text demo menu-text fw-bolder ms-2"><span style="text-transform:uppercase;">J</span>ob<span style="text-transform:uppercase;"> E</span>ntry</span>
+ *@    </a>
+
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    </a>
+</div>
+
+<div class="menu-inner-shadow"></div>
+
+<ul class="menu-inner py-1">
+    <!-- Dashboard -->
+    <li class="menu-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+        <a asp-controller="Home" asp-action="Index" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-briefcase"></i>
+            <div>Vakansiyalar</div>
+        </a>
+    </li>
+
+    <li class="menu-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Categories" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+        <a asp-controller="Categories" asp-action="Index" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-hive"></i>
+            <div>Kateqoriyalar</div>
+        </a>
+    </li>
+
+    <li class="menu-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Companies" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+        <a asp-controller="Companies" asp-action="Index" class="menu-link">
+            <i class="menu-icon tf-icons bx bxs-business"></i>
+            <div>Şirkətlər</div>
+        </a>
+    </li>
+
+    <li class="menu-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Cities" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+        <a asp-controller="Cities" asp-action="Index" class="menu-link">
+            <i class='menu-icon tf-icons bx bx-map'></i>
+            <div>Şəhərlər</div>
+        </a>
+    </li>
+
+</ul>

@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Əlaqə";
+    Layout = "_LayoutTwo";
+}
+
+@model Contact
+
+<div class="scrollable-container">
+    <h4>Əlaqə</h4>
+    <p>İrad, təklif və iş birlikləri üçün aşağıdaki formu dolduraraq bizimlə əlaqə saxlayın.</p>
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label" for="basic-default-email">Email</label>
+            <div class="input-group input-group-merge">
+                <input asp-for="Email"
+                       class="form-control"
+                       aria-describedby="basic-default-email2" />
+                <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+            </div>
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <div class="mb-3 form-group">
+            <label class="form-label" asp-for="FullName">Ad və Soyad</label>
+            <input class="form-control" asp-for="FullName" />
+            <span class="text-danger" asp-validation-for="FullName"></span>
+        </div>
+
+        <div class="mb-3 form-group">
+            <label class="form-label" asp-for="Subject">Mətnin başlığı</label>
+            <input class="form-control" asp-for="Subject" />
+            <span class="text-danger" asp-validation-for="Subject"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Message" class="form-label">Mətnin Məzmunu</label>
+            <textarea asp-for="Message" id="editor4" rows="9" class="form-control"></textarea>
+            <span class="text-danger" asp-validation-for="Message"></span>
+        </div>
+
+        <button type="submit" style="width:120px;margin-bottom:25px;" class="btn btn-outline-primary">Göndər</button>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

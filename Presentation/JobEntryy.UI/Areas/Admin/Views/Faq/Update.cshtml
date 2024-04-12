@@ -1,0 +1,46 @@
+﻿@model Faq
+
+
+<div class="row">
+    <div class="col-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Faq</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+
+                    <div class="mb-3 form-group">
+                        <label asp-for="Quetsion" class="form-label">Sual</label>
+                        <input asp-for="Quetsion" class="form-control" />
+                        <span asp-validation-for="Quetsion" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3 form-group">
+                        <label asp-for="Answer" class="form-label">Cavab</label>
+                        <textarea asp-for="Answer" id="editor" class="form-control"></textarea>
+                        <span asp-validation-for="Answer" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Yenilə</button>
+                    <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}

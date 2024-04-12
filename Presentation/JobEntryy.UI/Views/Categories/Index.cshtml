@@ -1,0 +1,84 @@
+﻿﻿
+@{
+    ViewData["Title"] = "Kateqoriyalar";
+}
+
+@model List<Category>
+
+@section Css {
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 0px 8%;
+        }
+
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 30px;
+        }
+
+        .service {
+            text-align: center;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #303ef7;
+            background: transparent;
+            transition: transform 0.5s, background 0.5s;
+        }
+
+
+
+            .service a {
+                font-size: 15px;
+                color: black;
+            }
+
+            .service:hover a {
+                color: white;
+            }
+
+            .service span {
+                font-size: 13px;
+            }
+
+            .service:hover {
+                background: #303ef7;
+                color: #fff;
+                border: 1px solid white;
+            }
+
+            .service .spn {
+                color: black;
+            }
+
+            .service:hover .spn {
+                color: #fff;
+            }
+
+    </style>
+}
+
+
+<div class="row my-5">
+    @foreach (Category item in Model)
+    {
+        <a asp-controller="Home" asp-action="Index" asp-route-catId="@item.Id">
+            <div style="margin:-11px;" class="service">
+                <span class="spn">@item.Name</span>
+            </div>
+        </a>
+    }
+</div>
