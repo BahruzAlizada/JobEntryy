@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Şəhərlər";
+    Layout = "_LayoutTwo";
 }
 
 @section Css {
@@ -69,27 +70,6 @@
 
 @model List<City>
 
-
-@* <div class="row">
-    <div class="col-12">
-        <form method="get">
-            <!--Search Start-->
-            <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
-                <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
-                    <input type="search" name="search"
-                           class="form-control"
-                           placeholder="Şəhər üzrə axtar..."
-                           aria-label="Şəhər üzrə axtar..."
-                           aria-describedby="basic-addon-search31" />
-                </div>
-                <button type="submit" style="border:none;background-color:transparent;margin-left:2px;">
-                    <span class="input-group-text" style="font-size:21px;height:43px;border-radius:6px;" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                </button>
-            </div>
-            <!--Search End-->
-        </form>
-    </div>
-</div> *@
 
 <div class="row my-5">
     @foreach (City item in Model)

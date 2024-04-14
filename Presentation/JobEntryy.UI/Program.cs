@@ -3,8 +3,23 @@ using JobEntryy.Persistence.Concrete;
 using Microsoft.AspNetCore.Identity;
 using JobEntryy.Persistence.Registration;
 using JobEntryy.Infrastructure.Registration;
+using Serilog;
+using Serilog.Core;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Logger log = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt")
+    .WriteTo.MSSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDataBase;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;", "Logs", 
+    autoCreateSqlTable: true)
+    .CreateLogger();
+
+builder.Host.UseSerilog(log);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -38,11 +53,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

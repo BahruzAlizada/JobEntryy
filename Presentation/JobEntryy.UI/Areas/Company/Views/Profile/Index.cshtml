@@ -1,0 +1,142 @@
+﻿@using JobEntryy.Domain.Identity
+@model Company
+
+@{
+    ViewData["Title"] = "Profil";
+    Layout = "_CompanyLayout";
+}
+
+@section Css{
+    <style>
+        .scrollable-container {
+            max-height: 490px;
+            overflow-y: auto;
+            scrollbar-color: #ccc transparent;
+        }
+
+            .scrollable-container::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .scrollable-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .scrollable-container::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border: transparent;
+            }
+    </style>
+}
+
+
+<!-- Content -->
+
+<div class="container my-4">
+    <div class="row">
+
+        <div class="col-12 col-md-7">
+            <div class="scrollable-container">
+                <!-- Account -->
+                
+                <div style="background-color:white;" class="card-body">
+                    <div class="row">
+
+                        <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+                            <img src="~/assets/img/company/@Model.Image"
+                                 alt="user-avatar"
+                                 class="d-block rounded"
+                                 height="100"
+                                 width="100"
+                                 id="uploadedAvatar" />
+                        </div>
+                        <h4>@Model.Name</h4>
+
+                        <div style="display:flex;">
+                            <a class="btn btn-primary my-3 mx-1" asp-action="Update">Düzəliş et</a>
+                            <a class="btn btn-warning my-3 mx-1" asp-action="ChangePassword">Şifrəni Dəyiş</a>
+                            <a class="btn btn-success my-3 mx-1" asp-controller="Vacancies" asp-action="CreateVacancy">Yeni Vakansiya</a>
+                        </div>
+
+                        <p style="color:black;">Paylaşılmış Vakansiyaların sayı - @ViewBag.JobsCount</p>
+
+                        <div>
+                            <p>
+                                <strong>Şirkət Haqqında</strong><br />
+                                @Html.Raw(Model.CompanyDescription)
+                            </p>
+                        </div>
+
+                        @if (Model.Address is not null)
+                        {
+                            <div>
+                                <p>
+                                    <strong>Ünvan</strong><br />
+                                    @Model.Address
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                        }
+
+                        @if (Model.PhoneNumber is not null)
+                        {
+                            <div>
+                                <p>
+                                    <strong>Əlaqə</strong><br />
+                                    @Model.PhoneNumber
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                        }
+
+                        @if (Model.Email is not null)
+                        {
+                            <div>
+                                <p>
+                                    <strong>Elektron poçt</strong><br />
+                                    @Model.Email
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                        }
+
+                        @if (Model.WebUrl is not null)
+                        {
+                            <div>
+                                <p>
+                                    <strong>VebSayt</strong><br />
+                                    <a href="@Model.WebUrl" target="_blank">@Model.WebUrl</a>
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                        }
+
+
+                    </div>
+                    <!-- /Account -->
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-5 d-none d-md-block">
+           @*  @await Component.InvokeAsync("FootBanner") *@
+        </div>
+
+    </div>
+</div>
+   
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -5,19 +5,19 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8905432E-7039-4B97-A35D-C46E9F9FA40B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobEntryy.Domain", "Core\JobEntryy.Domain\JobEntryy.Domain.csproj", "{E4A6C28F-9EAA-4019-B049-5CB90A64359A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobEntryy.Domain", "Core\JobEntryy.Domain\JobEntryy.Domain.csproj", "{E4A6C28F-9EAA-4019-B049-5CB90A64359A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobEntryy.Application", "Core\JobEntryy.Application\JobEntryy.Application.csproj", "{9A1BD33C-6FFA-44FB-9267-B5421DC5B445}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobEntryy.Application", "Core\JobEntryy.Application\JobEntryy.Application.csproj", "{9A1BD33C-6FFA-44FB-9267-B5421DC5B445}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{609B1742-0A00-4800-B3BE-90D4826FCBEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobEntryy.Infrastructure", "Infrastructure\JobEntryy.Infrastructure\JobEntryy.Infrastructure.csproj", "{41AF4A48-6AF2-45AC-B54F-A3F7DC50F9B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobEntryy.Infrastructure", "Infrastructure\JobEntryy.Infrastructure\JobEntryy.Infrastructure.csproj", "{41AF4A48-6AF2-45AC-B54F-A3F7DC50F9B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobEntryy.Persistence", "Infrastructure\JobEntryy.Persistence\JobEntryy.Persistence.csproj", "{32255AA7-590A-472E-928A-E95AD178E553}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobEntryy.Persistence", "Infrastructure\JobEntryy.Persistence\JobEntryy.Persistence.csproj", "{32255AA7-590A-472E-928A-E95AD178E553}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{15D0DF5A-5956-441A-B6AC-BF9C4D83D0B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobEntryy.UI", "Presentation\JobEntryy.UI\JobEntryy.UI.csproj", "{999FA1E1-2554-4FFF-80E9-87B06E579121}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobEntryy.UI", "Presentation\JobEntryy.UI\JobEntryy.UI.csproj", "{999FA1E1-2554-4FFF-80E9-87B06E579121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
