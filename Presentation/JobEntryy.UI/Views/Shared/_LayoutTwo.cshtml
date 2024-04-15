@@ -87,15 +87,7 @@
                             @* @await Component.InvokeAsync("SocialMedia") *@
                             <!--Social Media -->
                             <!-- User -->
-                            @if (User.Identity.IsAuthenticated)
-                            {
                                 @await Component.InvokeAsync("Header")
-                                ;
-                            }
-                            else
-                            {
-                                <a class="btn btn-success" asp-controller="Account" asp-action="Login">Yeni Vakansiya</a>
-                            }
                             <!--/ User -->
                         </ul>
                     </div>

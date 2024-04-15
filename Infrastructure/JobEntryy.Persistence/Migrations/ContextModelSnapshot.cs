@@ -175,9 +175,6 @@ namespace JobEntryy.Persistence.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -203,17 +200,20 @@ namespace JobEntryy.Persistence.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("ExperienceId");
 
                     b.HasIndex("JobTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Jobs");
                 });
@@ -376,6 +376,12 @@ namespace JobEntryy.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -383,16 +389,17 @@ namespace JobEntryy.Persistence.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPremium")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -438,6 +445,9 @@ namespace JobEntryy.Persistence.Migrations
                     b.Property<string>("UserRole")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("WebUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -449,10 +459,6 @@ namespace JobEntryy.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -558,28 +564,6 @@ namespace JobEntryy.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("JobEntryy.Domain.Identity.Company", b =>
-                {
-                    b.HasBaseType("JobEntryy.Domain.Identity.AppUser");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPremium")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("WebUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Company");
-                });
-
             modelBuilder.Entity("JobEntryy.Domain.Entities.Job", b =>
                 {
                     b.HasOne("JobEntryy.Domain.Entities.Category", "Category")
@@ -591,12 +575,6 @@ namespace JobEntryy.Persistence.Migrations
                     b.HasOne("JobEntryy.Domain.Entities.City", "City")
                         .WithMany("Jobs")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JobEntryy.Domain.Identity.Company", "Company")
-                        .WithMany("Jobs")
-                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -612,15 +590,21 @@ namespace JobEntryy.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("JobEntryy.Domain.Identity.AppUser", "User")
+                        .WithMany("Jobs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("City");
 
-                    b.Navigation("Company");
-
                     b.Navigation("Experience");
 
                     b.Navigation("JobType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("JobEntryy.Domain.Entities.JobDetail", b =>
@@ -711,7 +695,7 @@ namespace JobEntryy.Persistence.Migrations
                     b.Navigation("Jobs");
                 });
 
-            modelBuilder.Entity("JobEntryy.Domain.Identity.Company", b =>
+            modelBuilder.Entity("JobEntryy.Domain.Identity.AppUser", b =>
                 {
                     b.Navigation("Jobs");
                 });

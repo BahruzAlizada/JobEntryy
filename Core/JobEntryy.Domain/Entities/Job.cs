@@ -6,7 +6,7 @@ namespace JobEntryy.Domain.Entities
 {
     public class Job : BaseEntity
     {
-        public int CompanyId { get; set; }
+        public int UserId { get; set; }
         public int CategoryId { get; set; }
         public int CityId { get; set; }
         public int ExperienceId { get; set; }
@@ -22,7 +22,7 @@ namespace JobEntryy.Domain.Entities
         public bool IsPremium { get; set; }
 
         public JobDetail JobDetail { get; set; }
-        public Company Company { get; set; }
+        public AppUser User { get; set; }
         public Category Category { get; set; }
         public City City { get; set; }
         public Experience Experience { get; set; }

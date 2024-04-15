@@ -6,8 +6,8 @@
 
 
 
-@using JobEntryy.Domain.Identity
-@model Company
+@using JobEntryy.Application.ViewModels
+@model LoginVM
 
 <!-- Content -->
 <div class="container-xxl">
@@ -28,10 +28,9 @@
                         </div>
 
                         <div class="mb-3 form-password-toggle">
+                            <label asp-for="Password" class="form-label">Şifrə</label>
                             <div class="input-group input-group-merge">
-                                <input asp-for="Password"
-                                       class="form-control"
-                                       aria-describedby="password" />
+                                <input asp-for="Password" class="form-control" aria-describedby="password" />
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                             <span class="text-danger" asp-validation-for="Password"></span>

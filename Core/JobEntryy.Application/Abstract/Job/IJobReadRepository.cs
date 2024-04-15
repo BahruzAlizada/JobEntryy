@@ -5,5 +5,6 @@ namespace JobEntryy.Application.Abstract
 {
     public interface IJobReadRepository : IReadRepository<Job>
     {
+        Task<int> CompanyJobCountAsync(int userId);
     }
 }

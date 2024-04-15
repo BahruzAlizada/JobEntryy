@@ -1,5 +1,5 @@
-﻿@using JobEntryy.Domain.Identity
-@model Company
+﻿@using JobEntryy.Application.ViewModels
+@model CompanyVM
 
 @{
     ViewData["Title"] = "Profil";
@@ -8,135 +8,102 @@
 
 @section Css{
     <style>
-        .scrollable-container {
-            max-height: 490px;
-            overflow-y: auto;
-            scrollbar-color: #ccc transparent;
-        }
 
-            .scrollable-container::-webkit-scrollbar {
-                width: 5px;
-            }
-
-            .scrollable-container::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            .scrollable-container::-webkit-scrollbar-thumb {
-                background-color: #ccc;
-                border: transparent;
-            }
     </style>
 }
 
 
 <!-- Content -->
-
-<div class="container my-4">
-    <div class="row">
-
-        <div class="col-12 col-md-7">
-            <div class="scrollable-container">
-                <!-- Account -->
-                
-                <div style="background-color:white;" class="card-body">
+<div class="col-md-12 my-5">
+    <ul class="nav nav-pills flex-column flex-md-row mb-3">
+        <li class="nav-item">
+            <a class="nav-link active" asp-action="Index"><i class="bx bx-user me-1"></i> Profil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="ChangePassword"><i class='bx bxs-lock-open'></i> Şifrəni dəyiş</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="default" asp-controller="Account" asp-action="Logout"><i class='bx bx-power-off'></i> Çıxış et</a>
+        </li>
+    </ul>
+        <div class="card mb-4">
+            <!-- Account -->
+            <div class="card-body">
+                <img src="~/assets/img//company/@Model.Image" class="d-block rounded" height="100" width="115" />
+                <h5 style="margin-top:10px;">@Model.Name</h5>
+                <span style="font-size:14px;margin-top:-11px;">Vakansiyaların sayı - @Model.JobsCount (<a style="color:red;text-decoration:underline" asp-controller="Vacancies" asp-action="Index">Vakansiyaları gör</a>)</span>
+            </div>
+            <hr class="my-0" />
+            <span style="margin-left:15px;">Hesabı yenilədkidən sonra hesabdan çıxış ediləcəkdir.</span><hr />
+            <div class="card-body">
+                <form id="formAccountSettings" method="post">
                     <div class="row">
 
-                        <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
-                            <img src="~/assets/img/company/@Model.Image"
-                                 alt="user-avatar"
-                                 class="d-block rounded"
-                                 height="100"
-                                 width="100"
-                                 id="uploadedAvatar" />
-                        </div>
-                        <h4>@Model.Name</h4>
+                        @* <div class="mb-3 col-md-12">
+                            <label asp-for="Photo" for="email" class="form-label">Şirkətin loqosu</label>
+                            <input asp-for="Photo" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Name"></span>
+                        </div> *@
 
-                        <div style="display:flex;">
-                            <a class="btn btn-primary my-3 mx-1" asp-action="Update">Düzəliş et</a>
-                            <a class="btn btn-warning my-3 mx-1" asp-action="ChangePassword">Şifrəni Dəyiş</a>
-                            <a class="btn btn-success my-3 mx-1" asp-controller="Vacancies" asp-action="CreateVacancy">Yeni Vakansiya</a>
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="Name" for="email" class="form-label">Şirkətin adı</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Name"></span>
                         </div>
 
-                        <p style="color:black;">Paylaşılmış Vakansiyaların sayı - @ViewBag.JobsCount</p>
-
-                        <div>
-                            <p>
-                                <strong>Şirkət Haqqında</strong><br />
-                                @Html.Raw(Model.CompanyDescription)
-                            </p>
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="Email" for="email" class="form-label">Elektron Poçt</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Email"></span>
                         </div>
 
-                        @if (Model.Address is not null)
-                        {
-                            <div>
-                                <p>
-                                    <strong>Ünvan</strong><br />
-                                    @Model.Address
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                        }
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="WebUrl" for="email" class="form-label">İnternet adresi</label>
+                            <input asp-for="WebUrl" class="form-control" />
+                            <span class="text-danger" asp-validation-for="WebUrl"></span>
+                        </div>
 
-                        @if (Model.PhoneNumber is not null)
-                        {
-                            <div>
-                                <p>
-                                    <strong>Əlaqə</strong><br />
-                                    @Model.PhoneNumber
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                        }
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="PhoneNumber" for="email" class="form-label">Telefon nömrəsi</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                        </div>
 
-                        @if (Model.Email is not null)
-                        {
-                            <div>
-                                <p>
-                                    <strong>Elektron poçt</strong><br />
-                                    @Model.Email
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                        }
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="Address" for="email" class="form-label">Adres</label>
+                            <input asp-for="Address" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Address"></span>
+                        </div>
 
-                        @if (Model.WebUrl is not null)
-                        {
-                            <div>
-                                <p>
-                                    <strong>VebSayt</strong><br />
-                                    <a href="@Model.WebUrl" target="_blank">@Model.WebUrl</a>
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                        }
-
+                        <div class="mb-3 form-group">
+                            <label asp-for="CompanyDescription" class="form-label">Şirkət haqqında</label>
+                            <textarea asp-for="CompanyDescription" id="editor" class="form-control"></textarea>
+                            <span asp-validation-for="CompanyDescription" class="text-danger"></span>
+                        </div>
 
                     </div>
-                    <!-- /Account -->
-                </div>
-
-
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-success me-2">Yenilə</button>
+                    </div>
+                </form>
             </div>
-        </div>
 
-        <div class="col-5 d-none d-md-block">
-           @*  @await Component.InvokeAsync("FootBanner") *@
+            <!-- /Account -->
         </div>
-
     </div>
-</div>
-   
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
 }

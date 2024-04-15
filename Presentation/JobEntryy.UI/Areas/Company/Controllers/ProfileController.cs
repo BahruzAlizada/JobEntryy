@@ -1,4 +1,6 @@
-﻿using JobEntryy.Domain.Identity;
+﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.ViewModels;
+using JobEntryy.Domain.Identity;
 using JobEntryy.Persistence.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,24 +12,117 @@ namespace JobEntryy.UI.Areas.Company.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> userManager;
-        public ProfileController(UserManager<AppUser> userManager)
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly IJobReadRepository jobReadRepository;
+        public ProfileController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
+            IJobReadRepository jobReadRepository)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.jobReadRepository = jobReadRepository;
         }
 
         #region Index
         public async Task<IActionResult> Index()
         {
-            using var context = new Context();
 
             AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
             if (user == null) return BadRequest();
 
-            Domain.Identity.Company? company = await context.Companies.FirstOrDefaultAsync(x => x.Id == user.Id);
-            if(company == null) return BadRequest();
+            CompanyVM dbVm = new CompanyVM
+            {
+                Id = user.Id,
+                Image = user.Image,
+                Name = user.Name,
+                UserName = user.UserName,
+                Email = user.Email,
+                CompanyDescription = user.CompanyDescription,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                WebUrl = user.WebUrl,
+                IsPremium = user.IsPremium,
+                JobsCount = await jobReadRepository.CompanyJobCountAsync(user.Id),
+            };
 
-            return View(company);
+            return View(dbVm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Index(CompanyVM vm)
+        {
+            AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) return BadRequest();
+
+            CompanyVM dbVm = new CompanyVM
+            {
+                Id = user.Id,
+                Image = user.Image,
+                Name = user.Name,
+                UserName = user.UserName,
+                Email = user.Email,
+                CompanyDescription = user.CompanyDescription,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                WebUrl = user.WebUrl,
+                IsPremium = user.IsPremium,
+                JobsCount = await jobReadRepository.CompanyJobCountAsync(user.Id),
+            };
+
+
+            user.Name = vm.Name;
+            user.Email = vm.Email;
+            user.CompanyDescription = vm.CompanyDescription;
+            user.Address = vm.Address;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.WebUrl = vm.WebUrl;
+
+            await userManager.UpdateAsync(user);
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { area = "default" });
         }
         #endregion
+
+        #region ChangePassword
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM changePassword)
+        {
+            AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) return BadRequest();
+
+            bool passwordIsValid = await userManager.CheckPasswordAsync(user, changePassword.OldPassword);
+            if (passwordIsValid)
+            {
+                string newPasswordHash = userManager.PasswordHasher.HashPassword(user, changePassword.NewPassword);
+                user.PasswordHash = newPasswordHash;
+                var result = await userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View();
+                }
+                await signInManager.SignOutAsync();
+                return RedirectToAction("Login", "Account", new { area = "default" });
+            }
+            else
+            {
+                ModelState.AddModelError("OldPassword", "Köhnə şifrə yanlışdır !");
+                return View();
+            }
+        }
+        #endregion
+
+        
     }
 }

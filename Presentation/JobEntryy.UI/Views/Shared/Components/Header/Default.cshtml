@@ -1,44 +1,17 @@
 ﻿
-@* @if (User.IsInRole("Company"))
+
+@if (User.Identity.IsAuthenticated)
 {
-    <li class="nav-item navbar-dropdown dropdown-user dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <div class="avatar avatar-online">
-                <img src="~/assets/img/users/@Model.Image" class="w-px-40 h-auto rounded-circle" />
-            </div>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-                <a class="dropdown-item" asp-area="Company" asp-controller="Profile" asp-action="Index">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0 me-3">
-                            <div class="avatar avatar-online">
-                                <img src="~/assets/img/users/@Model.Image" class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">@Model.CompanyName</span>
-                            <small class="text-muted">@Model.UserName</small>
-                        </div>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <div class="dropdown-divider"></div>
-            </li>
-
-            <li>
-                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
-                    <i class="bx bx-power-off me-2"></i>
-                    <span class="align-middle">Çıxış et</span>
-                </a>
-            </li>
-        </ul>
-    </li>
+    if (User.IsInRole("Company"))
+    {
+        <a class="btn btn-success text-white" asp-area="Company" asp-controller="Profile" asp-action="Index">Şirkət paneli</a>
+    }
+    if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-success text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Panel</a>
+    }
 }
 else
-{ *@
-    <a class="btn btn-success text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Panel</a>
-@* } *@
-
+{
+    <a class="btn btn-success text-white" asp-area="Account" asp-controller="Login" asp-action="Index">Yeni Vakansiya</a>
+}
