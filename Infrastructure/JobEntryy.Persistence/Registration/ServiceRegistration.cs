@@ -13,6 +13,9 @@ namespace JobEntryy.Persistence.Registration
             services.AddScoped<IJobReadRepository, JobReadRepository>();
             services.AddScoped<IJobWriteRepository, JobWriteRepository>();
 
+            services.AddScoped<IJobDetailReadRepository, JobDetailReadRepository>();
+            services.AddScoped<IJobDetailWriteRepository, JobDetailWriteRepository>();
+
             services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
             services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
 

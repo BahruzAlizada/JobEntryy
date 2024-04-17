@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Yenilə";
+    Layout = "_CompanyLayout";
+}
+
+@using JobEntryy.Application.ViewModels
+@model CompanyVM
+
+    <div class="col-8">
+        <div class="card mb-4">
+            @* <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"></h5>
+            </div> *@
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+
+                    <div class="mb-3 form-group">
+                        <label asp-for="Photo" class="form-label">Şəkil</label>
+                        <input asp-for="Photo" accept="image/*" class="form-control" />
+                        <span asp-validation-for="Photo" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Yenilə</button>
+                    <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

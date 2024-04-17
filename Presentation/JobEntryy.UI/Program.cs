@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 Logger log = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt")
-    .WriteTo.MSSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDataBase;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;", "Logs", 
+    .WriteTo.MSSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;", "Logs",
     autoCreateSqlTable: true)
     .CreateLogger();
 

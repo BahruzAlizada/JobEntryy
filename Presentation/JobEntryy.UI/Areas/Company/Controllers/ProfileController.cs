@@ -2,6 +2,7 @@
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
 using JobEntryy.Persistence.Concrete;
+using JobEntryy.UI.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,15 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IJobReadRepository jobReadRepository;
+        private readonly IWebHostEnvironment env;
         public ProfileController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            IJobReadRepository jobReadRepository)
+            IJobReadRepository jobReadRepository, IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.jobReadRepository = jobReadRepository;
+            this.env = env;
+
         }
 
         #region Index
@@ -84,6 +88,86 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         }
         #endregion
 
+        #region UploadImage
+        public async Task<IActionResult> UploadImage()
+        {
+            AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) return BadRequest();
+
+            CompanyVM dbvm = new CompanyVM
+            {
+                Image = user.Image
+            };
+
+            return View(dbvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> UploadImage(CompanyVM company)
+        {
+            AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) return BadRequest();
+
+            CompanyVM dbvm = new CompanyVM { Image = user.Image };
+
+            //#region Image
+            //if (company.Photo is not null)
+            //{
+            //    if (!company.Photo.IsImage())
+            //    {
+            //        ModelState.AddModelError("Photo", "Yalnız şəkil tipli fayllar");
+            //        return View();
+            //    }
+            //    if (company.Photo.IsOlder256Kb())
+            //    {
+            //        ModelState.AddModelError("Photo", "Maksimum 256Kb");
+            //        return View();
+            //    }
+            //    string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
+            //    company.Image = await company.Photo.SaveFileAsync(folder);
+            //    string path = Path.Combine(env.WebRootPath, folder, dbvm.Image);
+            //    if (System.IO.File.Exists(path))
+            //        System.IO.File.Delete(path);
+
+            //    dbvm.Image = company.Image;
+            //    user.Image = company.Image;
+            //}
+            //else
+            //    user.Image = user.Image;
+            //#endregion
+
+
+            //await userManager.UpdateAsync(user);
+            //return RedirectToAction("Index");
+
+            if (company.Photo != null)
+            {
+                if (!company.Photo.IsImage())
+                {
+                    ModelState.AddModelError("Photo", "Yalnız şəkil tipli fayllar");
+                    return View();
+                }
+                if (company.Photo.IsOlder256Kb())
+                {
+                    ModelState.AddModelError("Photo", "Maksimum 256Kb");
+                    return View();
+                }
+                string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
+                user.Image = await company.Photo.SaveFileAsync(folder);
+
+                // Eski resmi sil
+                string oldImagePath = Path.Combine(folder, dbvm.Image);
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
+            }
+
+            await userManager.UpdateAsync(user);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         #region ChangePassword
         public IActionResult ChangePassword()
         {
@@ -122,7 +206,5 @@ namespace JobEntryy.UI.Areas.Company.Controllers
             }
         }
         #endregion
-
-        
     }
 }

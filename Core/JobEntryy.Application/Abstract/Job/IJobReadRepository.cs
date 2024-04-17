@@ -1,10 +1,15 @@
 ﻿using JobEntryy.Application.Repositories;
 using JobEntryy.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace JobEntryy.Application.Abstract
 {
     public interface IJobReadRepository : IReadRepository<Job>
     {
+        Task<List<Job>> GetCompanyJobsWithTakeAsync(int userId, int take);
+        Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId,int skipCount, int take);
         Task<int> CompanyJobCountAsync(int userId);
+
+        Task<List<Job>> GetJobsAsync(int take, int? userId, int? typeId, int? catId, int? cityId, int? expId, string search);
     }
 }

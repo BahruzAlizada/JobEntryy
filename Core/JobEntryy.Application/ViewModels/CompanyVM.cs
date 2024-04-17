@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobEntryy.Application.ViewModels
 {
@@ -19,6 +20,7 @@ namespace JobEntryy.Application.ViewModels
         public bool Status { get; set; }
 
         public int JobsCount { get; set; }
+        [NotMapped]
         public IFormFile Photo { get; set; }
     }
 }

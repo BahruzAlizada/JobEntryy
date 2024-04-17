@@ -29,7 +29,7 @@
 
                                 <div class="col-6 form-group">
                                     <label>Elan kateqoriyası</label>
-                                    <select class="form-control" name="jobTypeId">
+                                    <select class="form-control" name="typeId">
                                         @foreach (JobType jobType in ViewBag.JobTypes)
                                         {
                                             <option value="@jobType.Id">@jobType.Name</option>
@@ -39,7 +39,7 @@
 
                                 <div class="col-6 form-group">
                                     <label>Kateqoriya</label>
-                                    <select class="form-control" name="categoryId">
+                                    <select class="form-control" name="catId">
                                         @foreach (Category category in ViewBag.Categories)
                                         {
                                             <option value="@category.Id">@category.Name</option>
@@ -68,7 +68,7 @@
 
                                 <div class="col-6 form-group">
                                     <label>Təcrübə</label>
-                                    <select class="form-control" name="experienceId">
+                                    <select class="form-control" name="expId">
                                         @foreach (Experience experience in ViewBag.Experiences)
                                         {
                                             <option value="@experience.Id">@experience.Name</option>
@@ -79,7 +79,7 @@
                             </div>
 
                             <div id="AdresBox" class="mb-3">
-                                <label class="form-label" for="basic-default-email">Email</label>
+                                <label class="form-label">Email</label>
                                 <div class="input-group input-group-merge">
                                     <input asp-for="JobDetail.Email" class="form-control" aria-describedby="basic-default-email2" />
                                     <span class="input-group-text" id="basic-default-email2">@@example.com</span>
@@ -87,7 +87,7 @@
                                 <span class="text-danger" asp-validation-for="JobDetail.Email"></span>
                             </div>
 
-                            <div id="PrivateAdresBox" class="mb-3">
+                            <div id="PrivateAdresBox" class="mb-3 d-none">
                                 <label asp-for="JobDetail.Link" class="form-label">Link</label>
                                 <input asp-for="JobDetail.Link" class="form-control" />
                                 <span class="text-danger" asp-validation-for="JobDetail.Link"></span>
@@ -97,6 +97,7 @@
                                 <label class="mx-1">Link</label>
                                 <input id="isMain" type="checkbox" />
                             </div>
+
 
 
                             <div class="mb-3">
@@ -172,15 +173,6 @@
                     console.error(error);
                 });
         });
-
-        var deadLineInput = document.getElementById("DeadLineInput");
-
-        var today = new Date();
-
-        today.setDate(today.getDate() + 30);
-
-        var maxDate = today.toISOString().split('T')[0];
-        deadLineInput.setAttribute('max', maxDate);
 
 
         if ($("#isMain").prop('checked')) {

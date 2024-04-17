@@ -20,6 +20,9 @@
             <a class="nav-link active" asp-action="Index"><i class="bx bx-user me-1"></i> Profil</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" asp-controller="Vacancies" asp-action="Create"><i class='bx bx-plus-medical'></i> Yeni vakansiya</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" asp-action="ChangePassword"><i class='bx bxs-lock-open'></i> Şifrəni dəyiş</a>
         </li>
         <li class="nav-item">
@@ -29,22 +32,29 @@
         <div class="card mb-4">
             <!-- Account -->
             <div class="card-body">
-                <img src="~/assets/img//company/@Model.Image" class="d-block rounded" height="100" width="115" />
-                <h5 style="margin-top:10px;">@Model.Name</h5>
-                <span style="font-size:14px;margin-top:-11px;">Vakansiyaların sayı - @Model.JobsCount (<a style="color:red;text-decoration:underline" asp-controller="Vacancies" asp-action="Index">Vakansiyaları gör</a>)</span>
+                <div class="d-flex align-items-start align-items-sm-center gap-4">
+                    <div>
+                        <img src="~/assets/img//company/@Model.Image" class="d-block rounded" height="100" width="115" />
+                        <h5 style="margin-top:10px;">@Model.Name</h5>
+                        <span style="font-size:14px;margin-top:-11px;">Vakansiyaların sayı - @Model.JobsCount (<a style="color:red;text-decoration:underline" asp-controller="Vacancies" asp-action="Index">Vakansiyaları gör</a>)</span>
+                    </div>
+
+                    <div class="button-wrapper">
+                            <a asp-action="UploadImage" class="btn btn-primary me-2 mb-4">
+                                <span class="d-none d-sm-block">Yenilə</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                            </a>
+                    </div>
+                </div>
             </div>
+
             <hr class="my-0" />
             <span style="margin-left:15px;">Hesabı yenilədkidən sonra hesabdan çıxış ediləcəkdir.</span><hr />
             <div class="card-body">
                 <form id="formAccountSettings" method="post">
                     <div class="row">
 
-                        @* <div class="mb-3 col-md-12">
-                            <label asp-for="Photo" for="email" class="form-label">Şirkətin loqosu</label>
-                            <input asp-for="Photo" class="form-control" />
-                            <span class="text-danger" asp-validation-for="Name"></span>
-                        </div> *@
-
+                      
                         <div class="mb-3 col-md-6">
                             <label asp-for="Name" for="email" class="form-label">Şirkətin adı</label>
                             <input asp-for="Name" class="form-control" />

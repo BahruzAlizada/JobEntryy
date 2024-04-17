@@ -1,0 +1,131 @@
+﻿@using JobEntryy.Application.ViewModels
+@model CompanyVM
+
+@{
+	ViewData["Title"] = Model.Name;
+}
+
+@section Css {
+    <style>
+
+        .scrollable-container {
+            max-height: 452px;
+            overflow-y: auto;
+            scrollbar-color: #ccc transparent;
+        }
+
+            .scrollable-container::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .scrollable-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .scrollable-container::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border: transparent;
+            }
+
+
+        .shadow-box {
+            box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 7px;
+        }
+    </style>
+}
+
+
+<div class="scrollable-container">
+
+    <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+        <img src="~/assets/img/company/@Model.Image"
+             alt="user-avatar"
+             class="d-block rounded"
+             height="100"
+             width="100"
+             id="uploadedAvatar" />
+    </div>
+
+    <div>
+        <h4>
+            @Model.Name
+            @if (Model.IsPremium)
+            {
+                <div style="display:inline-block;">
+                    <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+                </div>
+            }
+        </h4>
+    </div>
+
+    <hr />
+    @if (ViewBag.JobsCount != 0)
+    {
+        <div>
+            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="CompanyVacancies" asp-route-id="@Model.Id">Vakansiyalar</a>
+        </div>
+        <hr />
+    }
+
+    <div>
+        <p>
+            <strong> Şirkət Haqqında</strong><br />
+            @Html.Raw(Model.CompanyDescription)
+        </p>
+    </div>
+
+    @if (Model.Address is not null)
+    {
+        <div>
+            <p>
+                <strong>Ünvan</strong><br />
+                @Model.Address
+            </p>
+        </div>
+    }
+    else
+    {
+    }
+
+    @if (Model.PhoneNumber is not null)
+    {
+        <div>
+            <p>
+                <strong>Əlaqə</strong><br />
+                @Model.PhoneNumber
+            </p>
+        </div>
+    }
+    else
+    {
+    }
+
+    @if (Model.Email is not null)
+    {
+        <div>
+            <p>
+                <strong>Elektron poçt</strong><br />
+                @Model.Email
+            </p>
+        </div>
+    }
+    else
+    {
+    }
+
+    @if (Model.WebUrl is not null)
+    {
+        <div>
+            <p>
+                <strong>VebSayt</strong><br />
+                <a href="@Model.WebUrl" target="_blank">@Model.WebUrl</a>
+            </p>
+        </div>
+    }
+    else
+    {
+    }
+
+</div>

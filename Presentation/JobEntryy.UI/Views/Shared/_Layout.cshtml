@@ -1,4 +1,4 @@
-﻿﻿﻿
+﻿﻿
 <!DOCTYPE html>
 <html lang="en"
       class="light-style layout-menu-fixed"
@@ -31,9 +31,18 @@
     <link rel="stylesheet" href="~/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="~/assets/css/demo.css" />
     <link rel="stylesheet" href="~/assets/css/vacancy.css" />
+    <link rel="stylesheet" href="~/assets/css/nvmenu.css" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="~/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        @@media (max-width: 767px) {
+            .layout-menu-toggle {
+                display: none;
+            }
+        }
+    </style>
 
     @RenderSection("Css", false)
 
@@ -52,7 +61,7 @@
         <div class="layout-container">
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-                 @await Component.InvokeAsync("Menu") 
+                @await Component.InvokeAsync("Menu")
             </aside>
             <!-- / Menu -->
             <!-- Layout container -->
@@ -67,23 +76,18 @@
                         </a>
                     </div>
 
+
+
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                             <!--Social Media -->
-                           @*  @await Component.InvokeAsync("SocialMedia") *@
+                            @* @await Component.InvokeAsync("SocialMedia") *@
                             <!--Social Media -->
                             <!-- User -->
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                @await Component.InvokeAsync("Header")
-                            }
-                            @* else
-                            { *@
-                                <a class="btn btn-success" asp-controller="Account" asp-action="Login">Yeni Vakansiya</a>
-                           @*  } *@
+                            @await Component.InvokeAsync("Header")
                             <!--/ User -->
                         </ul>
                     </div>
@@ -91,14 +95,19 @@
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
                 <div style="background-color:white;" class="content-wrapper">
-                    <!-- Content -->
 
                     <div class="container flex-grow-1 container-p-y">
-                        @RenderBody()
+                        <div class="row">
+                            <div class="col-12 col-md-12">
+                                @RenderBody()
+                            </div>
+
+
+                        </div>
                     </div>
                     <!-- / Content -->
                     <!-- Footer -->
-                     @await Component.InvokeAsync("Footer") 
+                    @await Component.InvokeAsync("Footer")
                     <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>
@@ -131,6 +140,7 @@
     <!-- Main JS -->
     @RenderSection("Scripts", false)
     <script src="~/assets/js/main.js"></script>
+    <script src="~/assets/js/nvmain.js"></script>
     <!-- Page JS -->
     <script src="~/assets/js/dashboards-analytics.js"></script>
 
