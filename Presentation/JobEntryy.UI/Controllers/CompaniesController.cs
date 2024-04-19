@@ -21,9 +21,12 @@ namespace JobEntryy.UI.Controllers
         #region Index
         public async Task<IActionResult> Index(string search)
         {
-            int take = 15;
+            int take = 3;
+            ViewBag.CompanyCount = await userManager.Users.Where(x => x.Status && (search == null || x.Name.Contains(search)) &&
+            x.UserRole.Contains("Company")).CountAsync();
+
             List<AppUser> users = await userManager.Users.Where(x => x.Status && x.UserRole.Contains("Company")
-            && (search == null || x.Name.Contains(search))).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.Created)
+            && (search == null || x.Name.Contains(search))).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.Jobs.Count)
             .Take(take).ToListAsync();
             List<CompanyVM> companies = new List<CompanyVM>();
 
@@ -43,6 +46,40 @@ namespace JobEntryy.UI.Controllers
 
             return View(companies);
         }
+        #endregion
+
+        #region LoadMore
+        public async Task<IActionResult> LoadMore(string search, int skipCount)
+        {
+            int take = 3;
+            int companyCount = await userManager.Users.Where(x => x.Status && (search == null || x.Name.Contains(search)) &&
+            x.UserRole.Contains("Company")).CountAsync();
+
+            if (companyCount <= skipCount)
+                return Content("Ok");
+
+			List<AppUser> users = await userManager.Users.Where(x => x.Status && x.UserRole.Contains("Company")
+			&& (search == null || x.Name.Contains(search))).OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.Jobs.Count)
+			.Skip(skipCount).Take(take).ToListAsync();
+			List<CompanyVM> companies = new List<CompanyVM>();
+
+			foreach (var item in users)
+			{
+				CompanyVM vm = new CompanyVM
+				{
+					Id = item.Id,
+					Image = item.Image,
+					Name = item.Name,
+					UserName = item.UserName,
+					IsPremium = item.IsPremium,
+					JobsCount = await jobReadRepository.CompanyJobCountAsync(item.Id)
+				};
+				companies.Add(vm);
+			}
+
+            return PartialView("_CompanyPartialView", companies);
+
+		}
         #endregion
 
         #region Detail

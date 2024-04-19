@@ -1,8 +1,434 @@
+﻿
+@using JobEntryy.Application.ViewModels
+@model HomeVM
+
 ﻿@{
-    ViewData["Title"] = "Vakansiyalar";
+     ViewData["Title"] = "Vakansiyalar";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@section Css{
+    <style>
+
+        
+
+        .box {
+            border: 1px solid #ddd; /* Kenarlık ekleyebilirsiniz */
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Box shadow eklemek */
+        }
+
+
+        .column {
+            width: 100%;
+            padding: 0 1em 1em 1em;
+            text-align: center;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            padding: 2em 1.5em;
+            background: linear-gradient(#ffffff 50%, #2c7bfe 50%);
+            background-size: 100% 200%;
+            background-position: 0 2.5%;
+            border-radius: 5px;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+
+        h3 a {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f194c;
+            margin: 1em 0;
+        }
+
+        p {
+            color: #575a7b;
+            font-size: 15px;
+            line-height: 1.6;
+            letter-spacing: 0.03em;
+        }
+
+        .pclass p{
+            max-width:410px;
+        }
+
+        .card:hover {
+            background-position: 0 100%;
+        }
+
+            .card:hover h3 a {
+                color: #ffffff;
+            }
+
+            .card:hover p {
+                color: #f0f0f0;
+            }
+
+                                    .fre {
+                                    background-color:gainsboro;
+                                    display: inline-block;
+                                    border-radius: 5px;
+                                    font-size: 8px;
+                                    padding :3px 3px;
+                                    margin-top: -13px;
+                                    }
+
+                                    
+                                
+                                
+/* 375 piksəl və daha kiçik ekranlar üçün tənzimləmələr */
+@@media only screen and (max-width: 375px) {
+
+    .jbn{
+        font-size: 14px;
+    }
+
+    .datcl{
+        font-size: 13px;
+    }
+
+    .pclass{
+        max-width: 162px;
+    }
+
+    .function{
+        font-size: 13px;
+    }
+}
+
+/* 768 piksəl və daha kiçik ekranlar üçün tənzimləmələr */
+@@media only screen and (min-width:376px) and (max-width: 450px) {
+
+    .jbn{
+        font-size: 14px;
+    }
+
+    .datcl{
+        font-size: 13px;
+    }
+
+    .pclass{
+        max-width: 180px;
+    }
+
+    .function{
+        font-size: 13px;
+    }
+}
+
+@@media only screen and (min-width:451px) and (max-width: 575px) {
+    .jbn{
+        font-size: 15px;
+    }
+
+    .datcl{
+        font-size: 13px;
+    }
+
+    .pclass{
+        max-width: 260px;
+    }
+
+    .function{
+        font-size: 13px;
+    }
+}
+
+@@media only screen and (min-width:576px) and (max-width: 999px) {
+
+    .jbn{
+        font-size: 15px;
+    }
+
+    .datcl{
+        font-size: 14px;
+    }
+
+    .pclass{
+        max-width: 311px;
+    }
+
+    .function{
+        font-size: 14px;
+    }
+}
+
+@@media only screen and (min-width:1000px)  {
+
+    .jbn{
+        font-size: 15px;
+    }
+
+    .datcl{
+        font-size: 14px;
+    }
+
+    .pclass{
+        max-width: 315px;
+    }
+
+    .function{
+        font-size: 14px;
+    }
+}
+
+    </style>
+}
+
+
+    <div class="row">
+
+        <div class="col-12 col-md-8">
+
+        <form method="get">
+            <!--Search Start-->
+            <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
+                <a style="max-width:60px;max-height:43px;" class="btn btn-primary text-white mx-2" id="filterButton" onclick="toggleFilterOptions()">
+                    <i class='bx bx-filter-alt'></i>
+                </a>
+                <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
+                    <input type="search" name="search"
+                           class="form-control"
+                           placeholder="Axtar..."
+                           aria-label="Axtar..."
+                           aria-describedby="basic-addon-search31" />
+                </div>
+                <button type="submit" style="border:none;background-color:transparent;margin-left:1px;">
+                    <span class="input-group-text" style="font-size:21px;height:43px;border-radius:6px;" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                </button>
+
+            </div>
+            <!--Search End-->
+
+            <!--Filter Start-->
+            <div class="my-3" id="filterOptions" style="display: none;">
+
+                <div class="row g-2">
+
+                    <div class="col-6">
+                        <select class="form-select" name="typeId" aria-label="Default select example">
+                            <option selected>Elanlar</option>
+                            @foreach (JobType jobType in Model.JobTypes)
+                            {
+                                <option value="@jobType.Id">@jobType.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <select class="form-select" name="catId" aria-label="Default select example">
+                            <option selected>Kateqoriyalar</option>
+                            @foreach (Category category in Model.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row g-2 my-2">
+
+                    <div class="col-6">
+                        <select class="form-select" name="cityId" aria-label="Default select example">
+                            <option selected>Şəhərlər</option>
+                            @foreach (City city in Model.Cities)
+                            {
+                                <option value="@city.Id">@city.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <select class="form-select" name="expId" aria-label="Default select example">
+                            <option selected>Təcrübə</option>
+                            @foreach (Experience experience in Model.Experiences)
+                            {
+                                <option value="@experience.Id">@experience.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button class="btn btn-outline-success">Filteri tətbiq et</button>
+                </div>
+
+            </div>
+            <!--Filter End-->
+        </form>
+
+            <!--Filter Shows-->
+            <div style="display:inline-block;">
+                @if (ViewBag.SearchName is not null)
+                {
+                    <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
+                        @ViewBag.SearchName
+                        <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
+                    </div>
+                }
+                @if (Model.Filter.typeId is not null)
+                {
+                    <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
+                    @ViewBag.SelectedJobTypeName
+                    <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
+                    </div>
+                }
+                @if (Model.Filter.catId is not null)
+                {
+                    <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
+                        @ViewBag.SelectedCategoryName
+                    <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
+                    </div>
+                }
+                @if (Model.Filter.cityId is not null)
+                {
+                    <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
+                        @ViewBag.SelectedCityName
+                        <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
+                    </div>
+                }
+                @if (Model.Filter.expId is not null)
+                {
+                    <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
+                        @ViewBag.SelectedExperience
+                        <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
+                    </div>
+                }
+            </div>
+            <!--Filter Shows-->
+
+            <!--Job Start-->
+            <div>
+                @if (Model.Jobs.Count > 0)
+                {
+                <div id="myproduct">
+                    @foreach (Job item in Model.Jobs)
+                    {
+                        var currentDate = DateTime.Today;
+                        var createdDate = item.CreatedTime.Date;
+                        var daysDifference = (currentDate - createdDate).Days;
+
+                        <div style="margin-bottom:2px;" class="box">
+                            <div style="display:flex; justify-content: space-between;">
+
+                                <div style="display:flex;" class="box-col box-80">
+                                    <a class="mx-2" style="display:inline-block;" asp-controller="Companies" asp-action="Detail" asp-route-username="@item.User.UserName">
+                                        <img src="~/assets/img/company/@item.User.Image" class="w-px-40 h-auto rounded-circle" />
+                                    </a>
+                                    <div class="pclass" style="display: flex; flex-direction: column; margin-left: 10px;">
+                                        <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px; display:inline-block;">
+                                            <a class="jbn" style="color: #000;" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
+                                            @if (item.IsPremium)
+                                            {
+                                                <span class="fre" style="color:green;">Premium</span>
+                                            }
+                                            else if (daysDifference < 5)
+                                            {
+                                                <span class="fre" style="color:red;">Yeni</span>
+                                            }
+                                        </p>
+                                        <span style="margin-top: 4px;" class="function">
+                                            <a style="color:rgba(0,0,0,.5)!important;" asp-controller="Companies" asp-action="Detail" asp-route-username="@item.User.UserName" style="color: black;">@item.User.Name</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="box-col box-20 text-right">
+                                    <div class="datcl" style="display: inline-block; flex-direction: column;">
+                                        <p class=datcl style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="col-12 justify-content-center my-4 d-flex">
+                    <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                    <input type="hidden" value="@Model.JobsCount" />
+                </div>
+
+                }
+                else
+                {
+                    <p>Sorğunuza əsasən heç bir vakansiya tapılmadı.</p>
+                }
+            </div>
+            <!--Job Finished-->
+
+        </div>
+
+        <!--Companies Start-->
+        <div class="col-4 d-none d-md-block">
+           <div style="display:block;">
+              @*  @await Component.InvokeAsync("Companies") *@
+           </div>
+        </div>
+        <!--Companies Finished-->
+
+    </div>
+
+
+
+
+@section Scripts{
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script asp-append-version="true">
+            function toggleFilterOptions() {
+            var filterOptions = document.getElementById("filterOptions");
+            if (filterOptions.style.display === "none") {
+                filterOptions.style.display = "block";
+            } else {
+                filterOptions.style.display = "none";
+            }
+        }
+
+   
+
+        // let skip = 35
+        //
+        // let productsCount = $("#loadMore").next().val()
+
+        // function checkLoadMore() {
+        //     if (productsCount <= skip) {
+        //         $("#loadMore").remove();
+        //     }
+        // }
+
+        // $(document).ready(function () {
+        //     checkLoadMore();
+        // });
+
+        // $(document).on("click", "#loadMore", function () {
+        //     $.ajax({
+        //         url: "/Home/LoadMore/",
+        //         type: "get",
+        //         data:
+        //         {
+        //             "skipCount": skip,
+        //             "filterr": JSON.stringify(filterModel)
+        //         },
+                
+        //         success: function (res) {
+        //             $("#myproduct").append(res)
+        //             skip += 35;
+
+        //             checkLoadMore();
+        //         }
+        //     });
+        // });
+
+    </script>
+}

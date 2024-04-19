@@ -158,12 +158,12 @@
                 }
             </div>
         </div>
-    } 
+    }
 
-    @*  <div class="col-12 justify-content-center my-4 d-flex">
+    <div class="col-12 justify-content-center my-4 d-flex">
         <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
         <input type="hidden" value="@ViewBag.CompanyCount" />
-    </div> *@
+    </div>
 
 </div>
 
@@ -176,7 +176,7 @@
 
 
     <script asp-append-version="true">
-        let skip = 27
+        let skip = 3
         let productsCount = $("#loadMore").next().val()
         let initialSearchValue = $("#initialSearchValue").val();
 
@@ -203,7 +203,7 @@
 
                 success: function (res) {
                     $("#myproduct").append(res)
-                    skip += 27;
+                    skip += 3;
 
                     checkLoadMore();
                 }

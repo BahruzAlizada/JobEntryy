@@ -10,6 +10,10 @@ namespace JobEntryy.Application.Abstract
         Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId,int skipCount, int take);
         Task<int> CompanyJobCountAsync(int userId);
 
-        Task<List<Job>> GetJobsAsync(int take, int? userId, int? typeId, int? catId, int? cityId, int? expId, string search);
+        Task<Job> GetJobWithIncludeAsync(int? id);
+
+        Task<List<Job>> GetJobsAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
+        Task<int> GetJobsCountAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
+
     }
 }

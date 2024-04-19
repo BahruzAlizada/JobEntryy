@@ -36,13 +36,11 @@ namespace JobEntryy.Persistence.EntityFramework
             return jobs;
         }
 
-        public async Task<List<Job>> GetJobsAsync(int take, int? userId, int? typeId, int? catId, int? cityId, int? expId, string search)
+        public async Task<List<Job>> GetJobsAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search)
         {
             using var context = new Context();
 
-            IQueryable<Job> jobs = context.Jobs.Include(x=>x.User).Where(x => x.Status).OrderByDescending(x => x.DeadLine).AsQueryable();
-            if (userId is not null)
-                jobs = jobs.Where(x => x.UserId == userId);
+            IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.CreatedTime).AsQueryable();
             if(typeId is not null)
                 jobs = jobs.Where(x=>x.JobTypeId == typeId);
             if (catId is not null)
@@ -55,6 +53,36 @@ namespace JobEntryy.Persistence.EntityFramework
                 jobs = jobs.Where(x => x.JobName.Contains(search));
 
             return await jobs.ToListAsync();
+        }
+
+        public async Task<int> GetJobsCountAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search)
+        {
+            using var context = new Context();
+
+            IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).AsQueryable();
+            if (typeId is not null)
+                jobs = jobs.Where(x => x.JobTypeId == typeId);
+            if (catId is not null)
+                jobs = jobs.Where(x => x.CategoryId == catId);
+            if (cityId is not null)
+                jobs = jobs.Where(x => x.CityId == cityId);
+            if (expId is not null)
+                jobs = jobs.Where(x => x.ExperienceId == expId);
+            if (search is not null)
+                jobs = jobs.Where(x => x.JobName.Contains(search));
+
+            int jobsCount = await jobs.CountAsync();
+
+            return jobsCount;
+        }
+
+        public async Task<Job> GetJobWithIncludeAsync(int? id)
+        {
+            using var context = new Context();
+
+            Job job = await context.Jobs.Include(x => x.User).Include(x => x.JobType).Include(x => x.Category).Include(x => x.City).
+                Include(x => x.Experience).Include(x=>x.JobDetail).FirstOrDefaultAsync(x => x.Id == id);
+            return job;
         }
     }
 }

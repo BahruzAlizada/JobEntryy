@@ -1,0 +1,18 @@
+﻿@using JobEntryy.Application.ViewModels
+@model CompanyVM
+
+<div class="column">
+    <div class="card">
+        <div>
+            <img src="~/assets/img/company/@Model.Image" class=" w-px-40 h-auto rounded-circle">
+        </div>
+        <h3><a asp-controller="Companies" asp-action="Detail" asp-route-username="@Model.UserName">@Model.Name</a></h3>
+        <p>@Model.JobsCount vakansiya</p>
+        @if (Model.IsPremium)
+        {
+            <div style="display:inline-block;">
+                <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+            </div>
+        }
+    </div>
+</div>

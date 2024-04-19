@@ -1,0 +1,21 @@
+﻿@using JobEntryy.Application.ViewModels
+@model List<CompanyVM>
+
+@foreach (CompanyVM item in Model)
+{
+    <div class="column">
+        <div class="card">
+            <div>
+                <img src="~/assets/img/company/@item.Image" class=" w-px-40 h-auto rounded-circle">
+            </div>
+            <h3><a asp-controller="Companies" asp-action="Detail" asp-route-username="@item.UserName">@item.Name</a></h3>
+            <p>@item.JobsCount vakansiya</p>
+            @if (item.IsPremium)
+            {
+                <div style="display:inline-block;">
+                    <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+                </div>
+            }
+        </div>
+    </div>
+}

@@ -1,7 +1,9 @@
 ﻿
 using JobEntryy.Application.Abstract;
 using JobEntryy.Application.Abstract.Categories;
+using JobEntryy.Application.Abstract.Company;
 using JobEntryy.Persistence.EntityFramework;
+using JobEntryy.Persistence.EntityFramework.Company;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JobEntryy.Persistence.Registration
@@ -10,6 +12,9 @@ namespace JobEntryy.Persistence.Registration
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
+            services.AddScoped<ICompanyReadRepository, CompanyReadRepository>();
+            services.AddScoped<ICompanyWriteRepository, CompanyWriteRepository>();
+
             services.AddScoped<IJobReadRepository, JobReadRepository>();
             services.AddScoped<IJobWriteRepository, JobWriteRepository>();
 
