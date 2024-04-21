@@ -1,5 +1,6 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.ViewModels;
+using JobEntryy.Domain.Entities;
 using JobEntryy.Domain.Identity;
 using JobEntryy.Persistence.Concrete;
 using Microsoft.AspNetCore.Identity;
@@ -48,6 +49,18 @@ namespace JobEntryy.UI.Controllers
         }
         #endregion
 
+        #region CompanyVacancies
+        public async Task<IActionResult> CompanyVacancies(string username)
+        {
+            if (username == null) return NotFound();
+            AppUser? company = await userManager.FindByNameAsync(username);
+            if (company == null) return BadRequest();
+
+            List<Job> jobs = await jobReadRepository.GetCompanyIncludeJobsWithTakeAsync(company.Id, 15);
+            return View(jobs);
+        }
+        #endregion
+
         #region LoadMore
         public async Task<IActionResult> LoadMore(string search, int skipCount)
         {
@@ -93,6 +106,7 @@ namespace JobEntryy.UI.Controllers
                 Id = user.Id,
                 Image = user.Image,
                 Name = user.Name,
+                UserName = user.UserName,
                 IsPremium = user.IsPremium,
                 CompanyDescription = user.CompanyDescription,
                 Address = user.Address,

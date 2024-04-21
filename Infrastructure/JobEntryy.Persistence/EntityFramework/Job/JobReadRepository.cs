@@ -18,6 +18,15 @@ namespace JobEntryy.Persistence.EntityFramework
             return jobCount;
         }
 
+        public async Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(int userId, int take)
+        {
+            using var context = new Context();
+
+            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.CreatedTime).
+                Take(take).ToListAsync();
+            return jobs;
+        }
+
         public async Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId, int skipCount, int take)
         {
             using var context = new Context();

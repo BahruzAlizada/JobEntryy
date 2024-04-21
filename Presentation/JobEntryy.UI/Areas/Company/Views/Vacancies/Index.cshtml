@@ -199,11 +199,17 @@
                     }
                 </div>
 
-                <div class="col-12 justify-content-center my-2 d-flex">
-                    <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
-                    <input type="hidden" value="@ViewBag.CompanyJobsCount" />
-                </div>
-
+                @if (Model.Count == 0)
+                {
+                    
+                }
+                else
+                {
+                    <div class="col-12 justify-content-center my-2 d-flex">
+                        <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                        <input type="hidden" value="@ViewBag.CompanyJobsCount" />
+                    </div>
+                }
             </div>
         </div>
 

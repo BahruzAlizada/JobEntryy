@@ -64,7 +64,7 @@
     @if (ViewBag.JobsCount != 0)
     {
         <div>
-            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="CompanyVacancies" asp-route-id="@Model.Id">Vakansiyalar</a>
+            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="CompanyVacancies" asp-route-username="@Model.UserName">Vakansiyalar</a>
         </div>
         <hr />
     }

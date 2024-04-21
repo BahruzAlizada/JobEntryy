@@ -7,6 +7,7 @@ namespace JobEntryy.Application.Abstract
     public interface IJobReadRepository : IReadRepository<Job>
     {
         Task<List<Job>> GetCompanyJobsWithTakeAsync(int userId, int take);
+        Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(int userId, int take);
         Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId,int skipCount, int take);
         Task<int> CompanyJobCountAsync(int userId);
 

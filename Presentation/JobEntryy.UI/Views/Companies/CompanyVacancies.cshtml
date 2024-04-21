@@ -1,0 +1,266 @@
+﻿
+@model List<Job>
+
+    ﻿
+@{
+    ViewData["Title"] = "Vakansiyalar";
+}
+
+@section Css {
+    <style>
+
+
+        .shadow-box {
+            box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 7px;
+        }
+
+        .box {
+            border: 1px solid #ddd; /* Kenarlık ekleyebilirsiniz */
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Box shadow eklemek */
+        }
+
+        .pclass {
+            max-width: 411px;
+        }
+
+        .fre {
+            background-color: gainsboro;
+            display: inline-block;
+            border-radius: 5px;
+            font-size: 8px;
+            padding: 3px 3px;
+            margin-top: -13px;
+        }
+
+
+
+
+        /* 375 piksəl və daha kiçik ekranlar üçün tənzimləmələr */
+        @@media only screen and (max-width: 375px) {
+
+            .jbn {
+                font-size: 14px;
+            }
+
+            .datcl {
+                font-size: 13px;
+            }
+
+            .pclass {
+                max-width: 175px;
+            }
+
+            .function {
+                font-size: 13px;
+            }
+        }
+
+        /* 768 piksəl və daha kiçik ekranlar üçün tənzimləmələr */
+        @@media only screen and (min-width:376px) and (max-width: 450px) {
+
+            .jbn {
+                font-size: 14px;
+            }
+
+            .datcl {
+                font-size: 13px;
+            }
+
+            .pclass {
+                max-width: 235px;
+            }
+
+            .function {
+                font-size: 13px;
+            }
+        }
+
+        @@media only screen and (min-width:451px) and (max-width: 575px) {
+            .jbn {
+                font-size: 15px;
+            }
+
+            .datcl {
+                font-size: 13px;
+            }
+
+            .pclass {
+                max-width: 300px;
+            }
+
+            .function {
+                font-size: 13px;
+            }
+        }
+
+        @@media only screen and (min-width:576px) and (max-width: 767px) {
+
+            .jbn {
+                font-size: 14px;
+            }
+
+            .datcl {
+                font-size: 14px;
+            }
+
+            .pclass {
+                max-width: 340px;
+            }
+
+            .function {
+                font-size: 14px;
+            }
+        }
+
+        @@media only screen and (min-width:768px) and (max-width: 999px) {
+
+            .jbn {
+                font-size: 14px;
+            }
+
+            .datcl {
+                font-size: 14px;
+            }
+
+            .pclass {
+                max-width: 320px;
+            }
+
+            .function {
+                font-size: 14px;
+            }
+        }
+    </style>
+}
+
+
+
+
+<div class="scrollable-container" id="scrl">
+
+    <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+        <img src="~/assets/img/company/@Model[0].User.Image"
+             alt="user-avatar"
+             class="d-block rounded"
+             height="100"
+             width="100"
+             id="uploadedAvatar" />
+    </div>
+
+    <div>
+        <h4>
+            @Model[0].User.Name
+            @if (Model[0].User.IsPremium)
+            {
+                <div style="display:inline-block;">
+                    <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+                </div>
+            }
+        </h4>
+    </div>
+
+    <hr />
+    <div>
+        <a class="btn btn-success text-white" asp-controller="Companies" asp-action="Detail" asp-route-username="@Model[0].User.UserName">Şirkət Haqqında</a>
+    </div>
+    <hr />
+
+   <div class="col-md-7">
+        <div id="myproduct">
+            @foreach (Job item in Model)
+            {
+                var currentDate = DateTime.Today;
+                var createdDate = item.CreatedTime.Date;
+                var daysDifference = (currentDate - createdDate).Days;
+
+                <div style="margin-bottom:2px;" class="box">
+                    <div style="display:flex; justify-content: space-between;">
+
+                        <div class="pclass box-col box-80">
+                            <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px;">
+                                <a class="jbn" style="color: #000;" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
+                                @if (item.IsPremium)
+                                {
+                                    <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Premium</span>
+                                }
+                                else if (daysDifference < 5)
+                                {
+                                    <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Yeni</span>
+                                }
+                            </p>
+                            <span style="font-size: 14px;" class="function">@item.User.Name</span>
+                        </div>
+
+                        <div class="box-col box-20 text-right my-3">
+                            <div class="datcl" style="display: inline-block; flex-direction: column;">
+                                <p class="datcl" style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.Count < 15)
+        {
+            
+        }
+        else
+        {
+            <div class="col-12 justify-content-center my-2 d-flex">
+                <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                <input type="hidden" value="@ViewBag.CompanyJobsCount" />
+            </div>
+        }
+    </div>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+    <script asp-append-version="true">
+        let skip = 15
+        let productsCount = $("#loadMore").next().val()
+        let appUserId = @ViewBag.AppUserId
+
+        function checkLoadMore() {
+            if (productsCount <= skip) {
+                $("#loadMore").remove();
+            }
+        }
+
+        $(document).ready(function () {
+            checkLoadMore();
+        });
+
+        $(document).on("click", "#loadMore", function () {
+            $.ajax({
+                url: "/Companies/ListMore/",
+                type: "get",
+                data:
+                {
+                    "skipCount": skip,
+                    "userId" : appUserId
+                },
+
+                success: function (res) {
+                    $("#myproduct").append(res)
+                    skip += 15;
+
+                    checkLoadMore();
+                }
+            });
+        });
+    </script>
+}
