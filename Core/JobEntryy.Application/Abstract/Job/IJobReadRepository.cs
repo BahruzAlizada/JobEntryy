@@ -16,5 +16,16 @@ namespace JobEntryy.Application.Abstract
         Task<List<Job>> GetJobsAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
         Task<int> GetJobsCountAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
 
+
+        Task<List<Job>> GetAllJobsWithPageAsync(int? companyId, int? typeId, int? catId, int? cityId, int? expId, int take, int page);
+
+
+        Task<List<Job>> GetPremiumJobsWithPageAsync(int take, int page);
+
+
+        Task<List<Job>> GetDeadlineFnsihedJobsAsync(int take, int page);
+        Task<double> GetFnishedDeadlinedPageCountAsync(double take);
+        Task<int> GetDeadlineFnishedCountAsync();
+
     }
 }

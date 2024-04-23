@@ -1,0 +1,186 @@
+﻿
+@model Job
+
+<!-- Start post Area -->
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <small class="text-muted float-end">Vakansiya</small>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                        <form method="post">
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" asp-for="JobName">Vakansiya adı (Bu xana mütləq doldurulmalıdır)</label>
+                                <input class="form-control" asp-for="JobName" />
+                                <span class="text-danger" asp-validation-for="JobName"></span>
+                            </div>
+
+
+                            <div class="row g-2 my-2">
+
+                                <div class="col-6 form-group">
+                                    <label>Elan kateqoriyası</label>
+                                    <select class="form-control" name="typeId">
+                                        @foreach (JobType jobType in ViewBag.JobTypes)
+                                        {
+                                            if (Model.JobTypeId == jobType.Id)
+                                            {
+                                                <option selected value="@jobType.Id">@jobType.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@jobType.Id">@jobType.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-6 form-group">
+                                    <label>Kateqoriya</label>
+                                    <select class="form-control" name="catId">
+                                        @foreach (Category category in ViewBag.Categories)
+                                        {
+                                            if(Model.CategoryId == category.Id)
+                                            {
+                                                <option selected value="@category.Id">@category.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@category.Id">@category.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <div class="row g-2 my-2">
+
+                                <div class="col-6 form-group">
+                                    <label>Şəhər</label>
+                                    <select class="form-control" name="cityId">
+                                        @foreach (City city in ViewBag.Cities)
+                                        {
+                                            if(Model.CityId == city.Id)
+                                            {
+                                                <option selected value="@city.Id">@city.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@city.Id">@city.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div class="col-6 form-group">
+                                    <label>Təcrübə</label>
+                                    <select class="form-control" name="expId">
+                                        @foreach (Experience experience in ViewBag.Experiences)
+                                        {
+                                            if (Model.ExperienceId == experience.Id)
+                                            {
+                                                <option selected value="@experience.Id">@experience.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@experience.Id">@experience.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                            </div>
+
+                    @if (Model.JobDetail.Email == null)
+                    {
+                        <div id="PrivateAdresBox" class="mb-3">
+                            <label asp-for="JobDetail.Link" class="form-label">Link</label>
+                            <input asp-for="JobDetail.Link" class="form-control" />
+                            <span class="text-danger" asp-validation-for="JobDetail.Link"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="AdresBox" class="mb-3">
+                            <label class="form-label">Email</label>
+                            <div class="input-group input-group-merge">
+                                <input asp-for="JobDetail.Email" class="form-control" aria-describedby="basic-default-email2" />
+                                <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                            </div>
+                            <span class="text-danger" asp-validation-for="JobDetail.Email"></span>
+                        </div>
+                    }
+
+
+                            <div class="mb-3">
+                                <span>Maaş təklifiniz yoxdursa "Müsahibə əsnasında təyin ediləcəkdir" şəklində qeyd edin.</span><br />
+                                <label asp-for="JobDetail.Salary" class="form-label">Maaş (Bu xana mütləq doldurulmalıdır)</label>
+                                <input asp-for="JobDetail.Salary" class="form-control" />
+                                <span class="text-danger" asp-validation-for="JobDetail.Salary"></span>
+                            </div>
+
+
+
+                            <div class="mb-3">
+                                <label asp-for="JobDetail.Responsibilities" class="form-label">Vəzifə öhdəlikləri (Bu xana mütləq doldurulmalıdır)</label>
+                                <textarea asp-for="JobDetail.Responsibilities" id="editor1" class="form-control"></textarea>
+                                <span class="text-danger" asp-validation-for="JobDetail.Responsibilities"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="JobDetail.RequiredSkills" class="form-label">Tələb olunan bacarıqlar (Bu xana mütləq doldurulmalıdır)</label>
+                                <textarea asp-for="JobDetail.RequiredSkills" id="editor2" class="form-control"></textarea>
+                                <span class="text-danger" asp-validation-for="JobDetail.RequiredSkills"></span>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label asp-for="JobDetail.JobGraphic" class="form-label">İş Qrafiki</label>
+                                <textarea asp-for="JobDetail.JobGraphic" id="editor3" class="form-control"></textarea>
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-success">Yenilə</button>
+                            <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+
+<!-- End post Area -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+    <script asp-append-version="true">
+        const editorIds = ['editor1', 'editor2', 'editor3'];
+
+        editorIds.forEach(editorId => {
+            ClassicEditor
+                .create(document.querySelector(`#${editorId}`))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+
+
+}
