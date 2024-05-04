@@ -1,4 +1,5 @@
 ﻿using JobEntryy.Application.Repositories;
+using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -13,8 +14,9 @@ namespace JobEntryy.Application.Abstract
 
         Task<Job> GetJobWithIncludeAsync(int? id);
 
-        Task<List<Job>> GetJobsAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
-        Task<int> GetJobsCountAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search);
+        Task<List<Job>> GetJobsAsync(FilterVM filter, int take);
+        Task<List<Job>> GetLoadMoreJobsAsync(FilterVM filter, int skipCount, int take);
+        Task<int> GetJobsCountAsync(FilterVM filter);
 
 
         Task<List<Job>> GetAllJobsWithPageAsync(int? companyId, int? typeId, int? catId, int? cityId, int? expId, int take, int page);

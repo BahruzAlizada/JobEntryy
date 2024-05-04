@@ -87,6 +87,18 @@
                             @* @await Component.InvokeAsync("SocialMedia") *@
                             <!--Social Media -->
                             <!-- User -->
+
+                            <div class="btn-group" style="margin-right:10px;">
+                                <button class="btn-sm dropdown-toggle" style="background-color:white; color:black;"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">Dil
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li ><a style="color:black; font-size:14px;" class="dropdown-item" asp-controller="Home" asp-action="ChangeCulture" asp-route-culture="Az">Az</a></li>
+                                    <li ><a style="color:black; font-size:14px;" class="dropdown-item" asp-controller="Home" asp-action="ChangeCulture" asp-route-culture="En">En</a></li>
+                                </ul>
+                            </div>
+
+
                             @await Component.InvokeAsync("Header")
                             <!--/ User -->
                         </ul>

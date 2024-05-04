@@ -1,0 +1,43 @@
+﻿@model List<Job>
+
+@foreach (Job item in Model)
+{
+    var currentDate = DateTime.Today;
+    var createdDate = item.CreatedTime.Date;
+    var daysDifference = (currentDate - createdDate).Days;
+
+    <div style="margin-bottom:2px;" class="box">
+        <div style="display:flex; justify-content: space-between;">
+
+            <div style="display:flex;" class="box-col box-80">
+                <a class="mx-2" style="display:inline-block;" asp-controller="Companies" asp-action="Detail" asp-route-username="@item.User.UserName">
+                    <img src="~/assets/img/company/@item.User.Image" class="w-px-40 h-auto rounded-circle" />
+                </a>
+                <div class="pclass" style="display: flex; flex-direction: column; margin-left: 10px;">
+                    <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px; display:inline-block;">
+                        <a class="jbn" style="color: #000;" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
+                        @if (item.IsPremium)
+                        {
+                            <span class="fre" style="color:green;">Premium</span>
+                        }
+                        else if (daysDifference < 5)
+                        {
+                            <span class="fre" style="color:red;">Yeni</span>
+                        }
+                    </p>
+                    <span style="margin-top: 4px;" class="function">
+                        <a style="color:rgba(0,0,0,.5)!important;" asp-controller="Companies" asp-action="Detail" asp-route-username="@item.User.UserName" style="color: black;">@item.User.Name</a>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="box-col box-20 text-right">
+                <div class="datcl" style="display: inline-block; flex-direction: column;">
+                    <p class=datcl style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

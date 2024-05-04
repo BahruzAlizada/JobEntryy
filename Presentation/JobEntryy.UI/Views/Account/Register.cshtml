@@ -1,6 +1,8 @@
 ﻿@using JobEntryy.Application.ViewModels
 @model RegisterVM
 
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer﻿
+
 ﻿@{
     ViewData["Title"] = "Qeydiyyatdan keç";
     Layout = "_LoginLayout";
@@ -11,14 +13,14 @@
             <!-- Register -->
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mb-2" style="text-align:center; padding:10px 0;">Xoş gəlmisiniz 👋</h4>
-                    <p class="mb-4">Yeni hesab yaradaraq öz şirkətinizin yeni vakansiyalarını paylaşa bilərsiniz</p>
+                    <h4 class="mb-2" style="text-align:center; padding:10px 0;">@localizer["Xoş gəlmisiniz"] 👋</h4>
+                    <p class="mb-4">@localizer["Yeni hesab yaradaraq öz şirkətinizin yeni vakansiyalarını paylaşa bilərsiniz"]</p>
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
                     <form method="post" enctype="multipart/form-data">
 
                         <div class="mb-3">
-                            <label asp-for="Photo" class="form-label">Şəkil</label>
+                            <label asp-for="Photo" class="form-label">@localizer["Şəkil"]</label>
                             <input asp-for="Photo" accept="image/*" class="form-control" />
                             <span class="text-danger" asp-validation-for="Photo"></span>
                         </div>
@@ -30,14 +32,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label">Şirkətin adı</label>
+                            <label asp-for="Name" class="form-label">@localizer["Şirkətin adı"]</label>
                             <input asp-for="Name" class="form-control" />
                             <span class="text-danger" asp-validation-for="Name"></span>
                         </div>
 
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label asp-for="Password" class="form-label" for="password">Şifrə</label>
+                                <label asp-for="Password" class="form-label" for="password">@localizer["Şifrə"]</label>
                             </div>
                             <div class="input-group input-group-merge">
                                 <input asp-for="Password"
@@ -50,7 +52,7 @@
 
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label asp-for="CheckPassword" class="form-label" for="password">Şifrənin Təkrarı</label>
+                                <label asp-for="CheckPassword" class="form-label" for="password">@localizer["Şifrənin Təkrarı"]</label>
                             </div>
                             <div class="input-group input-group-merge">
                                 <input asp-for="CheckPassword"
@@ -64,19 +66,19 @@
                         <div class="mb-3">
                             <div class="form-check">
                                 <input asp-for="IsRemember" class="form-check-input" type="checkbox" id="remember-me" />
-                                <label asp-for="IsRemember" class="form-check-label" for="remember-me"> Məni Xatırla </label>
+                                <label asp-for="IsRemember" class="form-check-label" for="remember-me"> @localizer["Məni Xatırla"] </label>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <button class="btn btn-primary d-grid w-100" type="submit">Qeydiyyatdan keç</button>
-                            <a class="btn btn-secondary my-2 w-100" asp-controller="Home" asp-action="Index">Ana səhifəyə qayıt</a>
+                            <button class="btn btn-primary d-grid w-100" type="submit">@localizer["Qeydiyyatdan keç"]</button>
+                            <a class="btn btn-secondary my-2 w-100" asp-controller="Home" asp-action="Index">@localizer["Ana səhifəyə qayıt"]</a>
                         </div>
                     </form>
                     <p class="text-center">
-                        <span>Zatən bir hesabım var?</span>
+                        <span>@localizer["Zatən bir hesabım var?"]</span>
                         <a asp-controller="Account" asp-action="Login">
-                            <span>Daxil ol</span>
+                            <span>@localizer["Daxil ol"]</span>
                         </a>
                     </p>
                 </div>

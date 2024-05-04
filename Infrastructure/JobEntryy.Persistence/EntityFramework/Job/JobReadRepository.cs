@@ -1,4 +1,5 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Entities;
 using JobEntryy.Persistence.Concrete;
 using JobEntryy.Persistence.Repositories;
@@ -91,43 +92,41 @@ namespace JobEntryy.Persistence.EntityFramework
             return pageCount;
         }
 
-        public async Task<List<Job>> GetJobsAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search)
+        public async Task<List<Job>> GetJobsAsync(FilterVM filter, int take)
         {
             using var context = new Context();
 
-            IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.CreatedTime).AsQueryable();
-            if(typeId is not null)
-                jobs = jobs.Where(x=>x.JobTypeId == typeId);
-            if (catId is not null)
-                jobs = jobs.Where(x => x.CategoryId == catId);
-            if (cityId is not null)
-                jobs = jobs.Where(x => x.CityId == cityId);
-            if (expId is not null)
-                jobs = jobs.Where(x => x.ExperienceId == expId);
-            if (search is not null)
-                jobs = jobs.Where(x => x.JobName.Contains(search));
+            IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
+                ThenByDescending(x=>x.CreatedTime).Take(take).AsQueryable();
 
-            return await jobs.ToListAsync();
+            if(filter.typeId is not null)
+                jobs = jobs.Where(x=>x.JobTypeId == filter.typeId);
+            if (filter.catId is not null)
+                jobs = jobs.Where(x => x.CategoryId == filter.catId);
+            if (filter.cityId is not null)
+                jobs = jobs.Where(x => x.CityId == filter.cityId);
+            if (filter.expId is not null)
+                jobs = jobs.Where(x => x.ExperienceId == filter.expId);
+
+            return await jobs.Where(x => (filter.search == null || x.JobName.Contains(filter.search))).ToListAsync();
         }
 
-        public async Task<int> GetJobsCountAsync(int take, int? typeId, int? catId, int? cityId, int? expId, string search)
+        public async Task<int> GetJobsCountAsync(FilterVM filter)
         {
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).AsQueryable();
-            if (typeId is not null)
-                jobs = jobs.Where(x => x.JobTypeId == typeId);
-            if (catId is not null)
-                jobs = jobs.Where(x => x.CategoryId == catId);
-            if (cityId is not null)
-                jobs = jobs.Where(x => x.CityId == cityId);
-            if (expId is not null)
-                jobs = jobs.Where(x => x.ExperienceId == expId);
-            if (search is not null)
-                jobs = jobs.Where(x => x.JobName.Contains(search));
 
-            int jobsCount = await jobs.CountAsync();
-
+            if (filter.typeId is not null)
+                jobs = jobs.Where(x => x.JobTypeId == filter.typeId);
+            if (filter.catId is not null)
+                jobs = jobs.Where(x => x.CategoryId == filter.catId);
+            if (filter.cityId is not null)
+                jobs = jobs.Where(x => x.CityId == filter.cityId);
+            if (filter.expId is not null)
+                jobs = jobs.Where(x => x.ExperienceId == filter.expId);
+            
+            int jobsCount = await jobs.Where(x => (filter.search == null || x.JobName.Contains(filter.search))).CountAsync();
             return jobsCount;
         }
 
@@ -138,6 +137,25 @@ namespace JobEntryy.Persistence.EntityFramework
             Job job = await context.Jobs.Include(x => x.User).Include(x => x.JobType).Include(x => x.Category).Include(x => x.City).
                 Include(x => x.Experience).Include(x=>x.JobDetail).FirstOrDefaultAsync(x => x.Id == id);
             return job;
+        }
+
+        public async Task<List<Job>> GetLoadMoreJobsAsync(FilterVM filter, int skipCount, int take)
+        {
+            using var context = new Context();
+
+            IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
+                ThenByDescending(x => x.CreatedTime).Skip(skipCount).Take(take).AsQueryable();
+
+            if (filter.typeId is not null)
+                jobs = jobs.Where(x => x.JobTypeId == filter.typeId);
+            if (filter.catId is not null)
+                jobs = jobs.Where(x => x.CategoryId == filter.catId);
+            if (filter.cityId is not null)
+                jobs = jobs.Where(x => x.CityId == filter.cityId);
+            if (filter.expId is not null)
+                jobs = jobs.Where(x => x.ExperienceId == filter.expId);
+           
+            return await jobs.Where(x=>(filter.search==null || x.JobName.Contains(filter.search))).ToListAsync();
         }
 
         public async Task<List<Job>> GetPremiumJobsWithPageAsync(int take, int page)

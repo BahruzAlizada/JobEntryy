@@ -1,12 +1,13 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer﻿
+@{
     ViewData["Title"] = "Əlaqə";
 }
 
 @model Contact
 
 <div class="scrollable-container">
-    <h4>Əlaqə</h4>
-    <p>İrad, təklif və iş birlikləri üçün aşağıdaki formu dolduraraq bizimlə əlaqə saxlayın.</p>
+    <h4>@localizer["Əlaqə"]</h4>
+    <p>@localizer["İrad, təklif və iş birlikləri üçün aşağıdaki formu dolduraraq bizimlə əlaqə saxlayın."]</p>
     <form method="post">
 
         <div class="mb-3">
@@ -21,24 +22,23 @@
         </div>
 
         <div class="mb-3 form-group">
-            <label class="form-label" asp-for="FullName">Ad və Soyad</label>
+            <label class="form-label" asp-for="FullName">@localizer["Ad və Soyad"]</label>
             <input class="form-control" asp-for="FullName" />
             <span class="text-danger" asp-validation-for="FullName"></span>
         </div>
 
-        <div class="mb-3 form-group">
-            <label class="form-label" asp-for="Subject">Mətnin başlığı</label>
+        <div class="mb-3 form-group">@localizer["Mövzu"]</label>
             <input class="form-control" asp-for="Subject" />
             <span class="text-danger" asp-validation-for="Subject"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="Message" class="form-label">Mətnin Məzmunu</label>
+            <label class="form-label" asp-for="Subject">@localizer["Məzmun"]</label>
             <textarea asp-for="Message" id="editor4" rows="9" class="form-control"></textarea>
             <span class="text-danger" asp-validation-for="Message"></span>
         </div>
 
-        <button type="submit" style="width:120px;margin-bottom:25px;" class="btn btn-outline-primary">Göndər</button>
+        <button type="submit" style="width:120px;margin-bottom:25px;" class="btn btn-outline-primary">@localizer["Göndər"]</button>
     </form>
 </div>
 

@@ -1,9 +1,13 @@
-using JobEntryy.Application.Abstract;
+﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Entities;
 using JobEntryy.UI.Models;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace JobEntryy.UI.Controllers
 {
@@ -28,14 +32,13 @@ namespace JobEntryy.UI.Controllers
         #region Index
         public async Task<IActionResult> Index(FilterVM filter)
         {
-            int take = 3;
-            List<Job> jobs = await jobReadRepository.GetJobsAsync(take, filter.typeId, filter.catId, filter.cityId, filter.expId, filter.search);
+            List<Job> jobs = await jobReadRepository.GetJobsAsync(filter, take:30);
             await ProcessFilters(filter);
 
             HomeVM homeVM = new HomeVM
             {
                 Jobs = jobs,
-                JobsCount = await jobReadRepository.GetJobsCountAsync(take, filter.typeId, filter.catId, filter.cityId, filter.expId, filter.search),
+                JobsCount = await jobReadRepository.GetJobsCountAsync(filter),
                 Categories = await categoryReadRepository.GetActiveCachingCategories(),
                 Cities = await cityReadRepository.GetActiveCachingCities(),
                 Experiences = await experienceReadRepository.GetAllAsync(x => x.Status),
@@ -43,6 +46,20 @@ namespace JobEntryy.UI.Controllers
                 Filter = filter
             };
             return View(homeVM);
+        }
+        #endregion
+
+        #region LoadMore
+        public async Task<IActionResult> LoadMore(int skipCount, string filterr)
+        {
+            FilterVM filter = JsonConvert.DeserializeObject<FilterVM>(filterr);
+
+            int jobsCount = await jobReadRepository.GetJobsCountAsync(filter);
+            if (jobsCount <= skipCount)
+                return Content(".");
+
+            List<Job> jobs = await jobReadRepository.GetLoadMoreJobsAsync(filter, skipCount, take: 30);
+            return PartialView("_VacancyPartialView", jobs);
         }
         #endregion
 
@@ -97,10 +114,26 @@ namespace JobEntryy.UI.Controllers
         #endregion
 
 
+
+        #region ChangeCulture
+        public async Task<IActionResult> ChangeCulture(string culture)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions()
+                {
+                    Expires = DateTimeOffset.UtcNow.AddMonths(6)
+                });
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+        #endregion
+
+        #region Error
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #endregion
     }
 }

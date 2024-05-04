@@ -1,16 +1,19 @@
-﻿<footer style="background-color:white;" class="content-footer footer">
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+
+<footer style="background-color:white;" class="content-footer footer">
     <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
         <div class="mb-2 mb-md-0">
             ©
             <script>document.write(new Date().getFullYear());</script>
-            Bütün hüquqlar qorunur.
+            @localizer["Bütün hüquqlar qorunur."]
         </div>
 
         <div>
-            <a style="color:black;" asp-controller="About" asp-action="Index" class="footer-link me-4">Haqqımızda</a>
-            <a style="color:black;" asp-controller="Packages" asp-action="Index" class="footer-link me-4">Xidmətlər</a>
+            <a style="color:black;" asp-controller="About" asp-action="Index" class="footer-link me-4">@localizer["Haqqımızda"]</a>
+            <a style="color:black;" asp-controller="Packages" asp-action="Index" class="footer-link me-4">@localizer["Xidmətlər"]</a>
             <a style="color:black;" asp-controller="Faqs" asp-action="Index" class="footer-link me-4">FAQ</a>
-            <a style="color:black;" asp-controller="Contact" asp-action="Index" class="footer-link me-4">Əlaqə</a>
+            <a style="color:black;" asp-controller="Contact" asp-action="Index" class="footer-link me-4">@localizer["Əlaqə"]</a>
         </div>
     </div>
 </footer>
@@ -25,14 +28,14 @@
                 <li class="nav__item">
                     <a asp-controller="Home" asp-action="Index" class="nav__link">
                         <i class="menu-icon tf-icons bx bx-briefcase"></i>
-                        <div>Vakansiyalar</div>
+                        <div>@localizer["Vakansiyalar"]</div>
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a asp-controller="Categories" asp-action="Index" class="nav__link">
                         <i class="menu-icon tf-icons bx bx-hive"></i>
-                        <div>Kateqoriyalar</div>
+                        <div>@localizer["Kateqoriyalar"]</div>
                     </a>
 
                 </li>
@@ -40,14 +43,14 @@
                 <li class="nav__item">
                     <a asp-controller="Companies" asp-action="Index" class="nav__link">
                         <i class="menu-icon tf-icons bx bxs-business"></i>
-                        <div>Şirkətlər</div>
+                        <div>@localizer["Şirkətlər"]</div>
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a asp-controller="Cities" asp-action="Index" class="nav__link">
                         <i class='menu-icon tf-icons bx bx-map'></i>
-                        <div>Şəhərlər</div>
+                        <div>@localizer["Şəhərlər"]</div>
                     </a>
                 </li>
 
@@ -55,14 +58,14 @@
                     @* <a asp-controller="About" asp-action="Index" class="nav__link">Haqqımızda</a> *@
                     <a asp-controller="About" asp-action="Index" class="nav__link">
                         <i class='menu-icon tf-icons bx bxs-adjust-alt'></i>
-                        <div>Haqqımızda</div>
+                        <div>@localizer["Haqqımızda"]</div>
                     </a>
                 </li>
                 <li class="nav__item">
                     @* <a asp-controller="Services" asp-action="Index" class="nav__link">Xidmətlər</a> *@
                     <a asp-controller="Packages" asp-action="Index" class="nav__link">
                         <i class='menu-icon tf-icons bx bx-window-alt'></i>
-                        <div>Xidmətlər</div>
+                        <div>@localizer["Xidmətlər"]</div>
                     </a>
                 </li>
 
@@ -78,9 +81,10 @@
                     @* <a asp-controller="Contact" asp-action="Index" class="nav__link">Əlaqə</a> *@
                     <a asp-controller="Contact" asp-action="Index" class="nav__link">
                         <i class='menu-icon tf-icons bx bxs-contact'></i>
-                        <div>Əlaqə</div>
+                        <div>@localizer["Əlaqə"]</div>
                     </a>
                 </li>
+
 
             </ul>
             <i class="nav__close menu-icon tf-icons bx bx-x" id="nav-close"></i>

@@ -1,4 +1,5 @@
 ﻿
+using JobEntryy.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JobEntryy.Infrastructure.Registration
@@ -7,7 +8,7 @@ namespace JobEntryy.Infrastructure.Registration
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-
+            services.AddSingleton<LanguageService>();
         }
     }
 }

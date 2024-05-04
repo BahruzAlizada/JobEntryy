@@ -9,6 +9,11 @@ using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Reflection;
+using JobEntryy.Infrastructure.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +46,27 @@ builder.Services.AddIdentity<AppUser, AppRole>(Identityoptions =>
 }).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
 
+builder.Services.AddLocalization(opt => {opt.ResourcesPath = "Resources";});
+
+builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(opt => 
+opt.DataAnnotationLocalizerProvider = (type, factory) =>
+{
+    var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+    return factory.Create(nameof(SharedResource), assemblyName.Name);
+});
+builder.Services.Configure<RequestLocalizationOptions>(opt =>
+{
+    var supportCultures = new List<CultureInfo>
+    {
+        new CultureInfo("Az"),
+        new CultureInfo("En")
+    };
+    opt.DefaultRequestCulture = new RequestCulture(culture: "Az", uiCulture: "Az");
+    opt.SupportedCultures = supportCultures;
+    opt.SupportedUICultures = supportCultures;
+    opt.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+});
+
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -62,6 +88,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value); 
 
 app.MapControllerRoute(
     name: "areas",

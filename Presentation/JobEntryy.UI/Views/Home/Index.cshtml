@@ -1,9 +1,9 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @using JobEntryy.Application.ViewModels
 @model HomeVM
 
 ﻿@{
-     ViewData["Title"] = "Vakansiyalar";
+    ViewData["Title"] = "Vakansiyalar";
 }
 
 @section Css{
@@ -195,8 +195,8 @@
                 <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
                     <input type="search" name="search"
                            class="form-control"
-                           placeholder="Axtar..."
-                           aria-label="Axtar..."
+                           placeholder="@localizer["Axtar"]..."
+                           aria-label="@localizer["Axtar"]..."
                            aria-describedby="basic-addon-search31" />
                 </div>
                 <button type="submit" style="border:none;background-color:transparent;margin-left:1px;">
@@ -213,20 +213,20 @@
 
                     <div class="col-6">
                         <select class="form-select" name="typeId" aria-label="Default select example">
-                            <option selected>Elanlar</option>
+                            <option selected>@localizer["Elanlar"]</option>
                             @foreach (JobType jobType in Model.JobTypes)
                             {
-                                <option value="@jobType.Id">@jobType.Name</option>
+                                <option value="@jobType.Id">@localizer[jobType.Name]</option>
                             }
                         </select>
                     </div>
 
                     <div class="col-6">
                         <select class="form-select" name="catId" aria-label="Default select example">
-                            <option selected>Kateqoriyalar</option>
+                            <option selected>@localizer["Kateqoriyalar"]</option>
                             @foreach (Category category in Model.Categories)
                             {
-                                <option value="@category.Id">@category.Name</option>
+                                <option value="@category.Id">@localizer[category.Name]</option>
                             }
                         </select>
                     </div>
@@ -237,7 +237,7 @@
 
                     <div class="col-6">
                         <select class="form-select" name="cityId" aria-label="Default select example">
-                            <option selected>Şəhərlər</option>
+                            <option selected>@localizer["Şəhərlər"]</option>
                             @foreach (City city in Model.Cities)
                             {
                                 <option value="@city.Id">@city.Name</option>
@@ -247,14 +247,14 @@
 
                     <div class="col-6">
                         <select class="form-select" name="expId" aria-label="Default select example">
-                            <option selected>Təcrübə</option>
+                            <option selected>@localizer["Təcrübə"]</option>
                             @foreach (Experience experience in Model.Experiences)
                             {
-                                <option value="@experience.Id">@experience.Name</option>
+                                <option value="@experience.Id">@localizer[experience.Name]</option>
                             }
                         </select>
                     </div>
-                    <button class="btn btn-outline-success">Filteri tətbiq et</button>
+                    <button class="btn btn-outline-success">@localizer["Filteri tətbiq et"]</button>
                 </div>
 
             </div>
@@ -273,14 +273,14 @@
                 @if (Model.Filter.typeId is not null)
                 {
                     <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
-                    @ViewBag.SelectedJobTypeName
+                        @localizer[ViewBag.SelectedJobTypeName]
                     <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
                     </div>
                 }
                 @if (Model.Filter.catId is not null)
                 {
                     <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
-                        @ViewBag.SelectedCategoryName
+                        @localizer[ViewBag.SelectedCategoryName]
                     <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
                     </div>
                 }
@@ -294,7 +294,7 @@
                 @if (Model.Filter.expId is not null)
                 {
                     <div class="my-2 mx-1" style="background-color: black; color: white; border-radius: 10px; display: inline-block; padding: 6px 4px;">
-                        @ViewBag.SelectedExperience
+                        @localizer[ViewBag.SelectedExperience]
                         <a style="color: white;" asp-controller="Home" asp-action="Index"><i class='bx bx-x'></i></a>
                     </div>
                 }
@@ -328,7 +328,7 @@
                                             }
                                             else if (daysDifference < 5)
                                             {
-                                                <span class="fre" style="color:red;">Yeni</span>
+                                                <span class="fre" style="color:red;">@localizer["Yeni"]</span>
                                             }
                                         </p>
                                         <span style="margin-top: 4px;" class="function">
@@ -351,14 +351,14 @@
 
 
                 <div class="col-12 justify-content-center my-4 d-flex">
-                    <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                    <a id="loadMore" class="btn btn-primary text-white">@localizer["Daha Çox"]</a>
                     <input type="hidden" value="@Model.JobsCount" />
                 </div>
 
                 }
                 else
                 {
-                    <p>Sorğunuza əsasən heç bir vakansiya tapılmadı.</p>
+                    <p>@localizer["Sorğunuza əsasən heç bir vakansiya tapılmadı."]</p>
                 }
             </div>
             <!--Job Finished-->
@@ -366,11 +366,18 @@
         </div>
 
         <!--Companies Start-->
-        <div class="col-4 d-none d-md-block">
-           <div style="display:block;">
-              @*  @await Component.InvokeAsync("Companies") *@
-           </div>
+    <div class="col-md-4 d-none d-md-block" style="position: sticky; top: 11px; height: calc(100vh - 20px); overflow-y: auto;">
+        <div style="display:block;">
+            <img src="~/assets/img/banners/0095b025-e9e2-4e5d-93ab-32fa897b92beimg.jpg" style="width:260px; height:400px;" />
+
+            <ul class="list-group" style="width:260px; margin-top:20px;">
+                <li class="list-group-item active">Dərc olunmuş vakansiyalar</li>
+                <li class="list-group-item">Ümumi - 190 vakansiya</li>
+                <li class="list-group-item">Günlük - 5 vakansiya</li>
+            </ul>
         </div>
+    </div>
+
         <!--Companies Finished-->
 
     </div>
@@ -395,40 +402,41 @@
             }
         }
 
-   
 
-        // let skip = 35
-        //
-        // let productsCount = $("#loadMore").next().val()
 
-        // function checkLoadMore() {
-        //     if (productsCount <= skip) {
-        //         $("#loadMore").remove();
-        //     }
-        // }
+        let skip = 30
+        let filterModel = @Html.Raw(Json.Serialize(Model.Filter));
+        let productsCount = $("#loadMore").next().val()
 
-        // $(document).ready(function () {
-        //     checkLoadMore();
-        // });
+        function checkLoadMore() {
+            if (productsCount <= skip) {
+                $("#loadMore").remove();
+            }
+        }
 
-        // $(document).on("click", "#loadMore", function () {
-        //     $.ajax({
-        //         url: "/Home/LoadMore/",
-        //         type: "get",
-        //         data:
-        //         {
-        //             "skipCount": skip,
-        //             "filterr": JSON.stringify(filterModel)
-        //         },
-                
-        //         success: function (res) {
-        //             $("#myproduct").append(res)
-        //             skip += 35;
+        $(document).ready(function () {
+            checkLoadMore();
+        });
 
-        //             checkLoadMore();
-        //         }
-        //     });
-        // });
+        $(document).on("click", "#loadMore", function () {
+            $.ajax({
+                url: "/Home/LoadMore/",
+                type: "get",
+                data:
+                {
+                    "skipCount": skip,
+                    "filterr": JSON.stringify(filterModel)
+                },
+
+                success: function (res) {
+                    $("#myproduct").append(res)
+                    skip += 30;
+
+                    checkLoadMore();
+                }
+            });
+        });
+
 
     </script>
 }

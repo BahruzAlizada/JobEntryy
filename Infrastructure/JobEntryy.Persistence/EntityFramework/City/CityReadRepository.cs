@@ -34,5 +34,14 @@ namespace JobEntryy.Persistence.EntityFramework
             }
             return cities;
         }
+
+        public async Task<List<City>> GetCitiesWithPagedAsync(int take, int page, string search)
+        {
+            using var context = new Context();
+
+            List<City> cities = await context.Cities.Where(x => x.Status && (search == null || x.Name.Contains(search))).
+                Skip((page - 1) * take).Take(take).ToListAsync();
+            return cities;
+        }
     }
 }

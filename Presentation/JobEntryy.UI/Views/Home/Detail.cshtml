@@ -1,4 +1,6 @@
-﻿@model Job
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+@model Job
 
 @{
     ViewData["Title"] = Model.JobName;

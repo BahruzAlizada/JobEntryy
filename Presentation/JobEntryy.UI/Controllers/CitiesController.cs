@@ -13,13 +13,12 @@ namespace JobEntryy.UI.Controllers
         }
 
         #region Index
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string search,int page = 1)
         {
-            double take = 18;
-            ViewBag.PageCount = await cityReadRepository.GetPagedCountAsync(take,x=>x.Status);
+            ViewBag.PageCount = await cityReadRepository.GetPagedCountAsync(take:18,x=>x.Status);
             ViewBag.CurrentPage = page;
 
-            List<City> cities = await cityReadRepository.GetPagedListAsync((int)take, page, x => x.Status,orderBy:x=>x.Name);
+            List<City> cities = await cityReadRepository.GetCitiesWithPagedAsync(take:18, page, search);
             return View(cities);
         }
         #endregion

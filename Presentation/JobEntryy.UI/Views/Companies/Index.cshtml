@@ -1,4 +1,5 @@
-﻿﻿
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+﻿
 @{
     ViewData["Title"] = "Şirkətlər";
 }
@@ -124,8 +125,8 @@
                 <div style="max-width:580px;max-height:43px;" class="input-group input-group-merge">
                     <input type="search" name="search" id="srch"
                            class="form-control"
-                           placeholder="Şirkət üzrə axtar..."
-                           aria-label="Şirkət üzrə axtar..."
+                           placeholder="@localizer["Şirkət üzrə axtar"]..."
+                           aria-label="@localizer["Şirkət üzrə axtar"]..."
                            aria-describedby="basic-addon-search31" />
                 </div>
                 <button type="submit" style="border:none;background-color:transparent;margin-left:2px;">
@@ -149,7 +150,7 @@
                     <img src="~/assets/img/company/@item.Image" class=" w-px-40 h-auto rounded-circle">
                 </div>
                 <h3><a asp-controller="Companies" asp-action="Detail" asp-route-username="@item.UserName">@item.Name</a></h3>
-                <p>@item.JobsCount vakansiya</p> 
+                <p>@item.JobsCount @localizer["vakansiya"]</p>
                 @if (item.IsPremium)
                 {
                     <div style="display:inline-block;">
@@ -160,8 +161,8 @@
         </div>
     }
 
-    <div class="col-12 justify-content-center my-4 d-flex">
-        <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+    <div class="col-12 justify-content-center d-flex">
+        <a id="loadMore" class="btn btn-primary my-3 text-white">@localizer["Daha Çox"]</a>
         <input type="hidden" value="@ViewBag.CompanyCount" />
     </div>
 

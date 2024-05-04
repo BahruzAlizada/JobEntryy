@@ -1,10 +1,11 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
 
 @if (User.Identity.IsAuthenticated)
 {
     if (User.IsInRole("Company"))
     {
-        <a class="btn btn-success text-white" asp-area="Company" asp-controller="Profile" asp-action="Index">Şirkət paneli</a>
+        <a class="btn btn-success text-white" asp-area="Company" asp-controller="Profile" asp-action="Index">@localizer["Şirkət paneli"]</a>
     }
     if (User.IsInRole("Admin"))
     {
@@ -13,5 +14,5 @@
 }
 else
 {
-    <a class="btn btn-success text-white" asp-controller="Account" asp-action="Login">Yeni Vakansiya</a>
+    <a class="btn btn-success text-white" asp-controller="Account" asp-action="Login">@localizer["Yeni Vakansiya"]</a>
 }

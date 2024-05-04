@@ -8,11 +8,9 @@ namespace JobEntryy.UI.Controllers
     public class PackagesController : Controller
     {
         private readonly IPackageReadRepository packageReadRepository;
-        private readonly IPackageWriteRepository packageWriteRepository;
-        public PackagesController(IPackageReadRepository packageReadRepository, IPackageWriteRepository packageWriteRepository)
+        public PackagesController(IPackageReadRepository packageReadRepository)
         {
             this.packageReadRepository = packageReadRepository;
-            this.packageWriteRepository = packageWriteRepository;
         }
 
         #region Index
