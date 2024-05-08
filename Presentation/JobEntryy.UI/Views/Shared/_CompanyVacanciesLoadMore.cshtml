@@ -1,0 +1,35 @@
+﻿@model List<Job>
+
+@foreach (Job item in Model)
+{
+    var currentDate = DateTime.Today;
+    var createdDate = item.CreatedTime.Date;
+    var daysDifference = (currentDate - createdDate).Days;
+
+    <div style="margin-bottom:2px;" class="box">
+        <div style="display:flex; justify-content: space-between;">
+
+            <div class="pclass box-col box-80">
+                <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px;">
+                    <a class="jbn" style="color: #000;" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
+                    @if (item.IsPremium)
+                    {
+                        <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">Premium</span>
+                    }
+                    else if (daysDifference < 5)
+                    {
+                        <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">Yeni</span>
+                    }
+                </p>
+                <span style="font-size: 14px;" class="function">@item.User.Name</span>
+            </div>
+
+            <div class="box-col box-20 text-right">
+                <div class="datcl" style="display: inline-block; flex-direction: column;">
+                    <p class="datcl" style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

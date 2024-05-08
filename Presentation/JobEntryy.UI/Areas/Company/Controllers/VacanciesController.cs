@@ -34,15 +34,12 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         #region Index
         public async Task<IActionResult> Index()
         {
-            int take = 15;
             AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
             if (user == null) return BadRequest();
+            
 
-            ViewBag.CompanyJobsCount = await jobReadRepository.CompanyJobCountAsync(user.Id);
-            ViewBag.UserId = user.Id;
-            ViewBag.CompanyName = user.Name;
-
-            List<Job> jobs = await jobReadRepository.GetCompanyJobsWithTakeAsync(user.Id, take);
+            ViewBag.JobsCount = await jobReadRepository.CompanyJobCountAsync(user.Id);
+            List<Job> jobs = await jobReadRepository.GetCompanyIncludeJobsWithTakeAsync(user.Id, take:15);
             return View(jobs);
         }
         #endregion
@@ -50,13 +47,12 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         #region ListMore
         public async Task<IActionResult> ListMore(int userId, int skipCount)
         {
-            int take = 15;
             int companyJobsCount = await jobReadRepository.CompanyJobCountAsync(userId);
 
             if (companyJobsCount <= skipCount)
                 return Content("d");
 
-            List<Job> jobs = await jobReadRepository.GetCompanyJobsLoadMoreAsync(userId, skipCount, take);
+            List<Job> jobs = await jobReadRepository.GetCompanyJobsLoadMoreAsync(userId, skipCount, take:15);
             return PartialView("_ListMore", jobs);
         }
         #endregion

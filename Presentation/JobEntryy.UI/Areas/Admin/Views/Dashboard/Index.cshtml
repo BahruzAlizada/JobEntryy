@@ -1,7 +1,45 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model StatitcsModel
 
-<h1>Index</h1>
+<div class="row">
+
+    <!--Vacancy Count-->
+    <div class="col-lg-8 mb-4 order-0">
+        <div class="card">
+            <div class="d-flex align-items-end row">
+                <div class="col-sm-7">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Təbriklər! 🎉</h5>
+                        <p class="mb-4">Gün ərzində sayta @Model.TodayAddJobCount yeni vakansiya əlavə edildi.</p>
+
+                        <a asp-controller="Vacancy" asp-action="Index" class="btn btn-sm btn-outline-primary">Vakansiyalara bax</a>
+                    </div>
+                </div>
+                <div class="col-sm-5 text-center text-sm-left">
+                    <div class="card-body pb-0 px-0 px-md-4">
+                        <img src="~/assets/img/layouts/man-with-laptop-light.png"
+                             height="140" alt="View Badge User"
+                             data-app-dark-img="illustrations/man-with-laptop-dark.png"
+                             data-app-light-img="illustrations/man-with-laptop-light.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Vacancy Count-->
+    <!--Stats Count-->
+    <div class="col-lg-4 col-md-4 order-1">
+        <div class="row">
+            <ul class="list-group">
+                <li style="background-color:white;color:black;" class="list-group-item">Aktiv Vakansiya sayı - @Model.ActiveJobCount</li>
+                <li style="background-color:white;color:black;" class="list-group-item">Aktiv Şirkət sayı - @Model.ActiveCompanyCount</li>
+                <li style="background-color:white;color:black;" class="list-group-item">Mesaj sayı - @Model.ContactCount</li>
+            </ul>
+        </div>
+    </div>
+    <!--Stats Count-->
+
+</div>
+
+
+
 

@@ -226,21 +226,16 @@
         </div>
         <!--Vacancy Finish-->
 
-        <div class="my-2" style="border: 1px solid #303ef7; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-            <p style="color: black;margin-top:8px; font-size:15px;">
-                Müraciət üçün son tarix - @Model.DeadLine.ToString("dd MMMM yyyy")
-            </p>
-        </div>
-
+      
         <div class="my-2" style="border: 1px solid #303ef7; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
             <p style="color: black;margin-top:8px;">
                 @if (Model.JobDetail.Email is not null)
                 {
-                    <span style="font-size:15px;">Müraciət etmək üçün - @Model.JobDetail.Email</span>
+                    <span style="font-size:15px;">@localizer["Müraciət etmək üçün"] - @Model.JobDetail.Email</span>
                 }
                 else
                 {
-                    <span style="font-size:15px;">Müraciət etmək üçün - <a class="btn btn-primary btn-sm text-white" target="_blank" href="@Model.JobDetail.Link">Link</a></span>
+                    <span style="font-size:15px;">@localizer["Müraciət etmək üçün"] - <a class="btn btn-primary btn-sm text-white" target="_blank" href="@Model.JobDetail.Link">Link</a></span>
                 }
             </p>
         </div>
@@ -250,32 +245,32 @@
             <div style="padding:5px;" class="row">
                 <div class="col-md-6">
                     <p style="color:black; font-size:14px;">
-                        Elan Kateqoriyası - @Model.JobType.Name<br />
-                        Kateqoriya - @Model.Category.Name<br />
-                        Maaş - @Model.JobDetail.Salary
+                        @localizer["Elan"] - @Model.JobType.Name<br />
+                        @localizer["Kateqoriya"] - @Model.Category.Name<br />
+                        @localizer["Maaş"] - @Model.JobDetail.Salary
                     </p>
                 </div>
                 <div class="col-6">
                     <p style="color:black;font-size:14px;">
-                        Şəhər - @Model.City.Name<br>
-                        Təcrübə - @Model.Experience.Name
+                        @localizer["Şəhər"] - @Model.City.Name<br>
+                        @localizer["Təcrübə"] - @Model.Experience.Name
                     </p>
                 </div>
             </div>
         </div>
         <!--Vacancy Short End-->
         <!--Vacancy Detail Start-->
-        <div class="mb-5">
+        <div class="mb-4">
 
-            <h5 style="color:black;" class="mb-3">Vəzifə öhdəlikləri :</h5>
+            <h5 style="color:black;" class="mb-3">@localizer["Vəzifə öhdəlikləri"] :</h5>
             <p>@Html.Raw(Model.JobDetail.Responsibilities)</p>
 
-            <h5 style="color:black;" class="mb-3">Tələb olunan bacarıq :</h5>
+            <h5 style="color:black;" class="mb-3">@localizer["Tələb olunan bacarıq"] :</h5>
             <p>@Html.Raw(Model.JobDetail.RequiredSkills)</p>
 
             @if (Model.JobDetail.JobGraphic is not null)
             {
-                <h5 style="color:black;" class="mb-3">İş qrafiki :</h5>
+                <h5 style="color:black;" class="mb-3">@localizer["İş qrafiki"] :</h5>
                 <p>@Html.Raw(Model.JobDetail.JobGraphic)</p>
             }
 

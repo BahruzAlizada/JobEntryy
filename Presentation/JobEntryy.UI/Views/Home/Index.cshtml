@@ -365,20 +365,9 @@
 
         </div>
 
-        <!--Companies Start-->
-    <div class="col-md-4 d-none d-md-block" style="position: sticky; top: 11px; height: calc(100vh - 20px); overflow-y: auto;">
-        <div style="display:block;">
-            <img src="~/assets/img/banners/0095b025-e9e2-4e5d-93ab-32fa897b92beimg.jpg" style="width:260px; height:400px;" />
-
-            <ul class="list-group" style="width:260px; margin-top:20px;">
-                <li class="list-group-item active">Dərc olunmuş vakansiyalar</li>
-                <li class="list-group-item">Ümumi - 190 vakansiya</li>
-                <li class="list-group-item">Günlük - 5 vakansiya</li>
-            </ul>
-        </div>
-    </div>
-
-        <!--Companies Finished-->
+        <!--Banner Start-->
+        @await Component.InvokeAsync("Banner")
+        <!--Banner Finished-->
 
     </div>
 

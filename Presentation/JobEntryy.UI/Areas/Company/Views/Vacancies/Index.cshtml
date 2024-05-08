@@ -8,25 +8,6 @@
 @section Css {
     <style>
 
-        .scrollable-container {
-            max-height: 490px;
-            overflow-y: auto;
-            scrollbar-color: #ccc transparent;
-        }
-
-            .scrollable-container::-webkit-scrollbar {
-                width: 5px;
-            }
-
-            .scrollable-container::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            .scrollable-container::-webkit-scrollbar-thumb {
-                background-color: #ccc;
-                border: transparent;
-            }
-
 
         .shadow-box {
             box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
@@ -43,9 +24,8 @@
         }
 
         .pclass {
-            max-width: 410px;
+            max-width: 411px;
         }
-
 
         .fre {
             background-color: gainsboro;
@@ -154,71 +134,90 @@
                 font-size: 14px;
             }
         }
-
     </style>
 }
 
-<div class="container my-4">
+
+
+
+<div class="container">
     <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+                <img src="~/assets/img/company/@Model[0].User.Image"
+                     alt="user-avatar"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
+            </div>
 
-        <div class="col-12 col-md-7">
-            <div class="scrollable-container">
-                <div id="myproduct">
-                    @foreach (Job item in Model)
+            <div>
+                <h4>
+                    @Model[0].User.Name
+                    @if (Model[0].User.IsPremium)
                     {
-                        var currentDate = DateTime.Today;
-                        var createdDate = item.CreatedTime.Date;
-                        var daysDifference = (currentDate - createdDate).Days;
-
-                        <div style="margin-bottom:2px;" class="box">
-                            <div style="display:flex; justify-content: space-between;">
-
-                                <div class="pclass box-col box-80">
-                                    <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px;">
-                                        <a class="jbn" style="color: #000;" asp-area="default" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
-                                        @if (item.IsPremium)
-                                        {
-                                            <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Premium</span>
-                                        }
-                                        else if (daysDifference < 5)
-                                        {
-                                            <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Yeni</span>
-                                        }
-                                    </p>
-                                    <span style="font-size: 14px;" class="function"><a style="color:rgba(0,0,0,.5)!important;" asp-area="default" asp-controller="Companies" asp-action="Detail" asp-route-id="@item.UserId" style="color: black;">@ViewBag.CompanyName</a></span>
-                                </div>
-
-                                <div class="box-col box-20 text-right">
-                                    <div class="datcl" style="display: inline-block; flex-direction: column;">
-                                        <p class="datcl" style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
-                                    </div>
-                                </div>
-
-                            </div>
+                        <div style="display:inline-block;">
+                            <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
                         </div>
                     }
-                </div>
+                </h4>
+            </div>
 
-                @if (Model.Count == 0)
+            <hr />
+
+            <div id="myproduct" class="my-3">
+                @foreach (Job item in Model)
                 {
-                    
-                }
-                else
-                {
-                    <div class="col-12 justify-content-center my-2 d-flex">
-                        <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
-                        <input type="hidden" value="@ViewBag.CompanyJobsCount" />
+                    var currentDate = DateTime.Today;
+                    var createdDate = item.CreatedTime.Date;
+                    var daysDifference = (currentDate - createdDate).Days;
+
+                    <div style="margin-bottom:2px;" class="box">
+                        <div style="display:flex; justify-content: space-between;">
+
+                            <div class="pclass box-col box-80">
+                                <p style="font-size: 15px; margin-bottom: -2px; margin-top:-1px;">
+                                    <a class="jbn" style="color: #000;" asp-area="default" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
+                                    @if (item.IsPremium)
+                                    {
+                                        <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">Premium</span>
+                                    }
+                                    else if (daysDifference < 5)
+                                    {
+                                        <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">Yeni</span>
+                                    }
+                                </p>
+                                <span style="font-size: 14px;" class="function">@item.User.Name</span>
+                            </div>
+
+                            <div class="box-col box-20 text-right">
+                                <div class="datcl" style="display: inline-block; flex-direction: column;">
+                                    <p class="datcl" style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 }
             </div>
+
+            <div class="col-12 justify-content-center my-4 d-flex">
+                <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                <input type="hidden" value="@ViewBag.JobsCount" />
+            </div>
+
         </div>
 
-        <div class="col-5 d-none d-md-block">
-            
-        </div>
+
+        <!--Banner Start-->
+        @await Component.InvokeAsync("Banner")
+        <!--Banner Finished-->
 
     </div>
+
 </div>
+
 
 @section Scripts {
 
@@ -229,7 +228,7 @@
     <script asp-append-version="true">
         let skip = 15
         let productsCount = $("#loadMore").next().val()
-        let appUserId = @ViewBag.AppUserId
+        let appUserId = @Model[0].UserId
 
             function checkLoadMore() {
                 if (productsCount <= skip) {
@@ -243,7 +242,7 @@
 
         $(document).on("click", "#loadMore", function () {
             $.ajax({
-                url: "/Companies/ListMore/",
+                url: "/Company/Vacancies/ListMore/",
                 type: "get",
                 data:
                 {

@@ -1,4 +1,5 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer﻿
+
 @model List<Job>
 
     ﻿
@@ -120,7 +121,7 @@
         @@media only screen and (min-width:768px) and (max-width: 999px) {
 
             .jbn {
-                font-size: 14px;
+                font-size: 15px;
             }
 
             .datcl {
@@ -141,39 +142,39 @@
 
 
 
-<div class="scrollable-container" id="scrl">
 
-    <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
-        <img src="~/assets/img/company/@Model[0].User.Image"
-             alt="user-avatar"
-             class="d-block rounded"
-             height="100"
-             width="100"
-             id="uploadedAvatar" />
-    </div>
+<div class="row">
+    <div class="col-12 col-md-8">
+        <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+            <img src="~/assets/img/company/@Model[0].User.Image"
+                 alt="user-avatar"
+                 class="d-block rounded"
+                 height="100"
+                 width="100"
+                 id="uploadedAvatar" />
+        </div>
 
-    <div>
-        <h4>
-            @Model[0].User.Name
-            @if (Model[0].User.IsPremium)
-            {
-                <div style="display:inline-block;">
-                    <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
-                </div>
-            }
-        </h4>
-    </div>
+        <div>
+            <h4>
+                @Model[0].User.Name
+                @if (Model[0].User.IsPremium)
+                {
+                    <div style="display:inline-block;">
+                        <span style="font-size:12px;background-color:green;color:white; padding :4px 4px;border-radius:5px;margin-top:0px;">Premium</span>
+                    </div>
+                }
+            </h4>
+        </div>
 
-    <hr />
-    <div>
-        <a class="btn btn-success text-white" asp-controller="Companies" asp-action="Detail" asp-route-username="@Model[0].User.UserName">Şirkət Haqqında</a>
-    </div>
-    <hr />
+        <hr />
+        <div>
+            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="Detail" asp-route-username="@Model[0].User.UserName">@localizer["Şirkət Haqqında"]</a>
+        </div>
+        <hr />
 
-   <div class="col-md-7">
-        <div id="myproduct">
-            @foreach (Job item in Model)
-            {
+            <div id="myproduct" class="my-3">
+                @foreach (Job item in Model)
+                {
                 var currentDate = DateTime.Today;
                 var createdDate = item.CreatedTime.Date;
                 var daysDifference = (currentDate - createdDate).Days;
@@ -186,17 +187,17 @@
                                 <a class="jbn" style="color: #000;" asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">@item.JobName</a>
                                 @if (item.IsPremium)
                                 {
-                                    <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Premium</span>
+                                    <span class="fre" style="font-size:10px;color:green; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">Premium</span>
                                 }
                                 else if (daysDifference < 5)
                                 {
-                                    <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-12px;">Yeni</span>
+                                    <span class="fre" style="font-size:10px;color:red; padding :4px 4px;border-radius:5px; background-color:gainsboro;margin-top:-11px;">@localizer["Yeni"]</span>
                                 }
                             </p>
                             <span style="font-size: 14px;" class="function">@item.User.Name</span>
                         </div>
 
-                        <div class="box-col box-20 text-right my-3">
+                        <div class="box-col box-20 text-right">
                             <div class="datcl" style="display: inline-block; flex-direction: column;">
                                 <p class="datcl" style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
                             </div>
@@ -204,23 +205,23 @@
 
                     </div>
                 </div>
-            }
+                }
+            </div>
+
+        <div class="col-12 justify-content-center my-4 d-flex">
+            <a id="loadMore" class="btn btn-primary text-white">@localizer["Daha Çox"]</a>
+            <input type="hidden" value="@ViewBag.JobsCount" />
+        </div>
+                
         </div>
 
-        @if (Model.Count < 15)
-        {
-            
-        }
-        else
-        {
-            <div class="col-12 justify-content-center my-2 d-flex">
-                <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
-                <input type="hidden" value="@ViewBag.CompanyJobsCount" />
-            </div>
-        }
-    </div>
+
+    <!--Banner Start-->
+    @await Component.InvokeAsync("Banner")
+    <!--Banner Finished-->
 
 </div>
+
 
 
 @section Scripts{
@@ -232,7 +233,7 @@
     <script asp-append-version="true">
         let skip = 15
         let productsCount = $("#loadMore").next().val()
-        let appUserId = @ViewBag.AppUserId
+        let appUserId = @Model[0].UserId
 
         function checkLoadMore() {
             if (productsCount <= skip) {
@@ -246,7 +247,7 @@
 
         $(document).on("click", "#loadMore", function () {
             $.ajax({
-                url: "/Companies/ListMore/",
+                url: "/Companies/CompanyVacanciesLoadMore/",
                 type: "get",
                 data:
                 {

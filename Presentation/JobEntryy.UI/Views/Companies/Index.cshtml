@@ -177,7 +177,7 @@
 
 
     <script asp-append-version="true">
-        let skip = 3
+        let skip = 21
         let productsCount = $("#loadMore").next().val()
         let initialSearchValue = $("#initialSearchValue").val();
 
@@ -204,7 +204,7 @@
 
                 success: function (res) {
                     $("#myproduct").append(res)
-                    skip += 3;
+                    skip += 21;
 
                     checkLoadMore();
                 }

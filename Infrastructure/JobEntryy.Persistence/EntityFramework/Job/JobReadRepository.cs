@@ -51,7 +51,7 @@ namespace JobEntryy.Persistence.EntityFramework
         {
             using var context = new Context();
 
-            List<Job> jobs = await context.Jobs.Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.CreatedTime).
+            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.CreatedTime).
                 Skip(skipCount).Take(take).ToListAsync();
             return jobs;
         }

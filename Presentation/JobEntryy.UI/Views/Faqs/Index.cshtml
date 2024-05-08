@@ -1,4 +1,6 @@
 ﻿@model List<Faq>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer﻿
+
 
 @{
     ViewData["Title"] = "FAQ";
@@ -36,7 +38,7 @@
 }
 
 <div class="scrollable-container">
-    <h3 style="text-align:center;margin-bottom:15px;color:black;">Ən Çox Verilən Suallar</h3>
+    <h3 style="text-align:center;margin-bottom:15px;color:black;">@localizer["Ən Çox Verilən Suallar"]</h3>
 
         @foreach (Faq faq in Model)
         {
