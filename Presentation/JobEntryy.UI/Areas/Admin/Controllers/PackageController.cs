@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class PackageController : Controller
     {
         private readonly IPackageReadRepository packageReadRepository;
@@ -58,14 +60,12 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             Package dbPack = packageReadRepository.Get(x => x.Id == id);
             if (dbPack == null) return BadRequest();
 
-            dbPack.Id = pack.Id;
-            dbPack.Status = pack.Status;
             dbPack.Name = pack.Name;
             dbPack.Description = pack.Description;
             dbPack.Price = pack.Price;
             dbPack.ForCompany = pack.ForCompany;
 
-            packageWriteRepository.Update(pack);
+            packageWriteRepository.Update(dbPack);
             return RedirectToAction("Index");
         }
         #endregion

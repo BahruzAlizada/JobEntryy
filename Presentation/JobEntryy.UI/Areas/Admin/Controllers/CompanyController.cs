@@ -2,6 +2,7 @@
 using JobEntryy.Application.Abstract.Company;
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class CompanyController : Controller
     {
         private readonly UserManager<AppUser> userManager;

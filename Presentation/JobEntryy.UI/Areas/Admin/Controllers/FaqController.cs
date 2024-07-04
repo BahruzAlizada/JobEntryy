@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class FaqController : Controller
     {
         private readonly IFaqReadRepository faqReadRepository;
@@ -58,12 +60,10 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             Faq? dbFaq = faqReadRepository.Get(x => x.Id == id);
             if (dbFaq == null) return BadRequest();
 
-            dbFaq.Id = faq.Id;
-            dbFaq.Status = faq.Status;
             dbFaq.Answer = faq.Answer;
             dbFaq.Quetsion = faq.Quetsion;
 
-            faqWriteRepository.Update(faq);
+            faqWriteRepository.Update(dbFaq);
             return RedirectToAction("Index");
         }
         #endregion

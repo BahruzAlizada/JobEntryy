@@ -1,11 +1,13 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
+using JobEntryy.Infrastructure.Abstract;
+using JobEntryy.Infrastructure.Concrete;
 using JobEntryy.Persistence.Concrete;
-using JobEntryy.UI.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace JobEntryy.UI.Areas.Company.Controllers
 {
@@ -15,13 +17,15 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IJobReadRepository jobReadRepository;
+        private readonly IPhotoService photoService;
         private readonly IWebHostEnvironment env;
         public ProfileController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            IJobReadRepository jobReadRepository, IWebHostEnvironment env)
+            IJobReadRepository jobReadRepository, IPhotoService photoService, IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.jobReadRepository = jobReadRepository;
+            this.photoService = photoService;
             this.env = env;
 
         }
@@ -112,56 +116,20 @@ namespace JobEntryy.UI.Areas.Company.Controllers
 
             CompanyVM dbvm = new CompanyVM { Image = user.Image };
 
-            //#region Image
-            //if (company.Photo is not null)
-            //{
-            //    if (!company.Photo.IsImage())
-            //    {
-            //        ModelState.AddModelError("Photo", "Yalnız şəkil tipli fayllar");
-            //        return View();
-            //    }
-            //    if (company.Photo.IsOlder256Kb())
-            //    {
-            //        ModelState.AddModelError("Photo", "Maksimum 256Kb");
-            //        return View();
-            //    }
-            //    string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
-            //    company.Image = await company.Photo.SaveFileAsync(folder);
-            //    string path = Path.Combine(env.WebRootPath, folder, dbvm.Image);
-            //    if (System.IO.File.Exists(path))
-            //        System.IO.File.Delete(path);
-
-            //    dbvm.Image = company.Image;
-            //    user.Image = company.Image;
-            //}
-            //else
-            //    user.Image = user.Image;
-            //#endregion
-
-
-            //await userManager.UpdateAsync(user);
-            //return RedirectToAction("Index");
-
-            if (company.Photo != null)
+           
+            #region Image
+            (bool isValid, string errorMessage) = await photoService.PhotoChechkValidatorAsync(company.Photo, true, false);
+            if (!isValid)
             {
-                if (!company.Photo.IsImage())
-                {
-                    ModelState.AddModelError("Photo", "Yalnız şəkil tipli fayllar");
-                    return View();
-                }
-                if (company.Photo.IsOlder256Kb())
-                {
-                    ModelState.AddModelError("Photo", "Maksimum 256Kb");
-                    return View();
-                }
-                string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
-                user.Image = await company.Photo.SaveFileAsync(folder);
-
-                // Eski resmi sil
-                string oldImagePath = Path.Combine(folder, dbvm.Image);
-                if (System.IO.File.Exists(oldImagePath))
-                    System.IO.File.Delete(oldImagePath);
+                ModelState.AddModelError("Photo", errorMessage);
+                return View();
             }
+            string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
+            user.Image = await photoService.SavePhotoAsync(company.Photo, folder);
+
+            string path = Path.Combine(env.WebRootPath, folder, dbvm.Image);
+            photoService.DeletePhoto(path);
+            #endregion
 
             await userManager.UpdateAsync(user);
             return RedirectToAction("Index");

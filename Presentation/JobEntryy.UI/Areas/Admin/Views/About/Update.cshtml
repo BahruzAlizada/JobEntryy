@@ -1,37 +1,40 @@
 ﻿@model About
 
-<hr class="my-5" />
 
-<!-- Bordered Table -->
-<div class="card">
-    <div class="card-header" style="display:flex;justify-content:space-between">
-        <p>Haqqımızda</p>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive text-nowrap">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Haqqımızda</th>
-                        <th style="text-align:right">Aksiyon</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Html.Raw(Model.Description)</td>
+<div class="row">
+    <div class="col-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Haqqımızda</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                   
+                    <div class="mb-3 form-group">
+                        <label asp-for="Description" class="form-label">Haqqımızda</label>
+                        <textarea asp-for="Description" id="editor" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
-                        <td>
-                            <div style="display:flex;justify-content:flex-end">
-                                <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary  text-white" style="margin-right:10px;"><i class='bx bxs-pencil'></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <button type="submit" class="btn btn-primary">Yenilə</button>
+                    <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+                </form>
+            </div>
         </div>
-
     </div>
 </div>
-<!--/ Bordered Table -->
 
-<hr class="my-5" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}

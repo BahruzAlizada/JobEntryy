@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="SuperAdmin,Admin,JobManager,ContactManager")]
     public class AboutController : Controller
     {
         private readonly IAboutReadRepository aboutReadRepository;
@@ -42,11 +44,9 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             About dbAbout = aboutReadRepository.Get(x => x.Id == id);
             if (dbAbout == null) return BadRequest();
 
-            dbAbout.Id = about.Id;
             dbAbout.Description = about.Description;
-            dbAbout.Status = about.Status;
 
-            aboutWriteRepository.Update(about);
+            aboutWriteRepository.Update(dbAbout);
             return RedirectToAction("Index");
         }
         #endregion

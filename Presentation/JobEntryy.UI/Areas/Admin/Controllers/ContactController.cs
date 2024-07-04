@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class ContactController : Controller
     {
         private readonly IContactReadRepository contactReadRepository;

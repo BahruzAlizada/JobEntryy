@@ -1,11 +1,13 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class CityController : Controller
     {
         private readonly ICityReadRepository cityReadRepository;
@@ -77,11 +79,9 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
                 return View();
             }
 
-            dbCity.Id = city.Id;
             dbCity.Name = city.Name;
-            dbCity.Status = city.Status;
 
-            cityWriteRepository.Update(city);
+            cityWriteRepository.Update(dbCity);
             return RedirectToAction("Index");
         }
         #endregion

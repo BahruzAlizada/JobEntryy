@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class SocialMediaController : Controller
     {
         private readonly ISocialMediaReadRepository socialMediaReadRepository;
@@ -58,12 +60,10 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             SocialMedia dbSocialMedia = socialMediaReadRepository.Get(x => x.Id == id);
             if (dbSocialMedia == null) return BadRequest();
 
-            dbSocialMedia.Id = socialMedia.Id;
-            dbSocialMedia.Status = socialMedia.Status;
             dbSocialMedia.Icon = socialMedia.Icon;
             dbSocialMedia.Link = socialMedia.Link;
 
-            socialMediaWriteRepository.Update(socialMedia);
+            socialMediaWriteRepository.Update(dbSocialMedia);
             return RedirectToAction("Index");
         }
         #endregion

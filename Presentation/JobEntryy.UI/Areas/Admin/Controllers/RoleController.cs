@@ -1,4 +1,5 @@
 ﻿using JobEntryy.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<AppRole> roleManager;

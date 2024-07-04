@@ -1,11 +1,13 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.Abstract.Categories;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class CategoryController : Controller
     {
         private readonly ICategoryReadRepository categoryReadRepository;
@@ -75,11 +77,9 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             }
             #endregion
 
-            dbCategory.Id = category.Id;
-            dbCategory.Status = category.Status;
             dbCategory.Name = category.Name;
 
-            categoryWriteRepository.Update(category);
+            categoryWriteRepository.Update(dbCategory);
             return RedirectToAction("Index");
         }
         #endregion

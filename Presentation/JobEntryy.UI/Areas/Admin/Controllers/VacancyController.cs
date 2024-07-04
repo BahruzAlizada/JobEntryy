@@ -2,12 +2,14 @@
 using JobEntryy.Domain.Entities;
 using JobEntryy.Persistence.Concrete;
 using JobEntryy.Persistence.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class VacancyController : Controller
     {
         private readonly IJobReadRepository jobReadRepository;

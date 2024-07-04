@@ -1,10 +1,12 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class ExperienceController : Controller
     {
         private readonly IExperienceReadRepository experienceReadRepository;
@@ -72,11 +74,9 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
                 return View();
             }
 
-            dbExp.Id = exp.Id;
-            dbExp.Status = exp.Status;
             dbExp.Name = exp.Name;
 
-            experienceWriteRepository.Update(exp);
+            experienceWriteRepository.Update(dbExp);
             return RedirectToAction("Index");
         }
         #endregion

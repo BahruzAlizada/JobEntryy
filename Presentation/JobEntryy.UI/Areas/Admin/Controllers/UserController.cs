@@ -2,6 +2,7 @@
 using JobEntryy.Application.Abstract.Company;
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> userManager;

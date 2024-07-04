@@ -1,11 +1,13 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Domain.Entities;
 using JobEntryy.Persistence.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,JobManager,ContactManager")]
     public class JobTypeController : Controller
     {
         private readonly IJobTypeReadRepository jobTypeReadRepository;
@@ -73,11 +75,9 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
                 return View();
             }
 
-            dbJT.Id = JobType.Id;
-            dbJT.Status = JobType.Status;
             dbJT.Name = JobType.Name;
 
-            jobTypeWriteRepository.Update(JobType);
+            jobTypeWriteRepository.Update(dbJT);
             return RedirectToAction("Index");
         }
         #endregion

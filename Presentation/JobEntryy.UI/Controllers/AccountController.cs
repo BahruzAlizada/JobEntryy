@@ -1,7 +1,7 @@
 ﻿using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
+using JobEntryy.Infrastructure.Abstract;
 using JobEntryy.Persistence.Concrete;
-using JobEntryy.UI.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +13,15 @@ namespace JobEntryy.UI.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly IPhotoService photoService;
         private readonly IWebHostEnvironment env;
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            RoleManager<AppRole> roleManager, IWebHostEnvironment env)
+            RoleManager<AppRole> roleManager, IPhotoService photoService, IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this.photoService = photoService;
             this.env = env;
         }
 
@@ -76,34 +78,26 @@ namespace JobEntryy.UI.Controllers
         public async Task<IActionResult> Register(RegisterVM register)
         {
 
-            #region Image
-            if (register.Photo == null)
-            {
-                ModelState.AddModelError("Photo", "Bu xana boş ola bilməz");
-                return View();
-            }
-            if (!register.Photo.IsImage())
-            {
-                ModelState.AddModelError("Photo", "Sadəcə jpeg yaxud jpg tipli fayllar");
-                return View();
-            }
-            if (register.Photo.IsOlder512Kb())
-            {
-                ModelState.AddModelError("Photo", "Maksimum 512 Kb");
-                return View();
-            }
-            string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
-            #endregion
-
             AppUser company = new AppUser
             {
                 Name = register.Name,
                 Email = register.Email,
                 UserName = Guid.NewGuid().ToString("N").Substring(0, 8),
-                Image = await register.Photo.SaveFileAsync(folder),
                 UserRole = "Company",
                 Status = true
             };
+
+            #region Image
+            (bool isValid, string errorMessage) = await photoService.PhotoChechkValidatorAsync(register.Photo, false, false);
+            if (!isValid)
+            {
+                ModelState.AddModelError("Photo", errorMessage);
+                return View();
+            }
+            string folder = Path.Combine(env.WebRootPath, "assets", "img", "company");
+            company.Image = await photoService.SavePhotoAsync(register.Photo,folder);
+            #endregion
+
 
             IdentityResult result = await userManager.CreateAsync(company, register.Password);
             if (!result.Succeeded)
