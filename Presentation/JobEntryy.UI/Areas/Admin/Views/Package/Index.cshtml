@@ -19,6 +19,7 @@
                         <th>Ad</th>
                         <th>Qiymət</th>
                         <th>Tip</th>
+                        <th>Yenilənmə, İstifadəçi adı</th>
                         <th>Status</th>
                         <th style="text-align:right">Aksiyonlar</th>
                     </tr>
@@ -37,6 +38,17 @@
                                 else
                                 {
                                     <span style="padding:6px 4px; color:black;">Vakansiya üçün</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.Updated is null)
+                                {
+                                    <span style="padding:6px 4px; background-color:red; color:white;">Dəyişiklik olmayıb</span>
+                                }
+                                else
+                                {
+                                    @item.Updated<br />
+                                    <a asp-controller="Users" asp-action="Index" asp-route-username="@item.ByChanged">@item.ByChanged</a>
                                 }
                             </td>
                             <td>

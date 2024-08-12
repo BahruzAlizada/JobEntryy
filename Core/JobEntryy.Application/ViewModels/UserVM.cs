@@ -6,7 +6,7 @@ namespace JobEntryy.Application.ViewModels
 {
     public class UserVM
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required(ErrorMessage = "Bu xana boş qala bilməz")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Bu xana boş qala bilməz")]

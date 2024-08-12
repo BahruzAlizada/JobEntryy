@@ -5,6 +5,5 @@ namespace JobEntryy.Application.Abstract
 {
     public interface IJobTypeWriteRepository : IWriteRepository<JobType>
     {
-        void Activity(JobType jobType);
     }
 }

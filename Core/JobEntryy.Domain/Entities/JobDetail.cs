@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobEntryy.Domain.Entities
 {
-    public class JobDetail : BaseEntity
+    public class JobDetail : EntityList
     {
         [Required(ErrorMessage = "Bu xana boş ola bilməz")]
         public string RequiredSkills { get; set; } //Tələb olunan bacarıq //+ -
@@ -18,6 +18,6 @@ namespace JobEntryy.Domain.Entities
 
         public Job Job { get; set; }
         [ForeignKey("Job")]
-        public int JobId { get; set; }
+        public Guid JobId { get; set; }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Text;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
 {
@@ -11,10 +15,13 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly IExperienceReadRepository experienceReadRepository;
         private readonly IExperienceWriteRepository experienceWriteRepository;
-        public ExperienceController(IExperienceReadRepository experienceReadRepository, IExperienceWriteRepository experienceWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public ExperienceController(IExperienceReadRepository experienceReadRepository, IExperienceWriteRepository experienceWriteRepository,
+           UserManager<AppUser> userManager)
         {
             this.experienceReadRepository = experienceReadRepository;
             this.experienceWriteRepository = experienceWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -49,7 +56,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             Experience dbExp = experienceReadRepository.Get(x=>x.Id==id);
@@ -61,7 +68,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id,Experience exp)
+        public async Task<IActionResult> Update(Guid? id,Experience exp)
         {
             if (id == null) return NotFound();
             Experience dbExp = experienceReadRepository.Get(x => x.Id == id);
@@ -75,6 +82,8 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             }
 
             dbExp.Name = exp.Name;
+            dbExp.Updated = DateTime.UtcNow.AddHours(4);
+            dbExp.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
 
             experienceWriteRepository.Update(dbExp);
             return RedirectToAction("Index");
@@ -82,7 +91,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             Experience exp = experienceReadRepository.Get(x => x.Id == id);

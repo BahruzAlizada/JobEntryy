@@ -1,6 +1,9 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
@@ -11,10 +14,13 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly IPackageReadRepository packageReadRepository;
         private readonly IPackageWriteRepository packageWriteRepository;
-        public PackageController(IPackageReadRepository packageReadRepository, IPackageWriteRepository packageWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public PackageController(IPackageReadRepository packageReadRepository, IPackageWriteRepository packageWriteRepository,
+            UserManager<AppUser> userManager)
         {
             this.packageReadRepository = packageReadRepository;
             this.packageWriteRepository = packageWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -42,7 +48,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             Package dbPack = packageReadRepository.Get(x => x.Id == id);
@@ -54,7 +60,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, Package pack)
+        public async Task<IActionResult> Update(Guid? id, Package pack)
         {
             if (id == null) return NotFound();
             Package dbPack = packageReadRepository.Get(x => x.Id == id);
@@ -65,13 +71,16 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             dbPack.Price = pack.Price;
             dbPack.ForCompany = pack.ForCompany;
 
+            dbPack.Updated = DateTime.UtcNow.AddHours(4);
+            dbPack.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
+
             packageWriteRepository.Update(dbPack);
             return RedirectToAction("Index");
         }
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             Package pack = packageReadRepository.Get(x => x.Id == id);
@@ -83,7 +92,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null) return NotFound();
             Package pack = packageReadRepository.Get(x => x.Id == id);

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JobEntryy.Persistence.Concrete
 {
-    public class Context : IdentityDbContext<AppUser,AppRole,int>
+    public class Context : IdentityDbContext<AppUser,AppRole,Guid>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryy;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;");
         }
 
         public DbSet<Category> Categories { get; set; }

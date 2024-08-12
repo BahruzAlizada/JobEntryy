@@ -1,7 +1,10 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using JobEntryy.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
@@ -12,10 +15,13 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly IJobTypeReadRepository jobTypeReadRepository;
         private readonly IJobTypeWriteRepository jobTypeWriteRepository;
-        public JobTypeController(IJobTypeReadRepository jobTypeReadRepository, IJobTypeWriteRepository jobTypeWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public JobTypeController(IJobTypeReadRepository jobTypeReadRepository, IJobTypeWriteRepository jobTypeWriteRepository,
+            UserManager<AppUser> userManager)
         {
             this.jobTypeReadRepository = jobTypeReadRepository;
             this.jobTypeWriteRepository = jobTypeWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -50,7 +56,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             JobType dbJT = jobTypeReadRepository.Get(x => x.Id == id);
@@ -62,7 +68,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, JobType JobType)
+        public async Task<IActionResult> Update(Guid? id, JobType JobType)
         {
             if (id == null) return NotFound();
             JobType dbJT = jobTypeReadRepository.Get(x => x.Id == id);
@@ -76,6 +82,8 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             }
 
             dbJT.Name = JobType.Name;
+            dbJT.Updated = DateTime.UtcNow.AddHours(4);
+            dbJT.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
 
             jobTypeWriteRepository.Update(dbJT);
             return RedirectToAction("Index");
@@ -83,7 +91,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             JobType jobType = jobTypeReadRepository.Get(x => x.Id == id);

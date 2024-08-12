@@ -57,7 +57,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Create(UserVM vm, int roleId)
+        public async Task<IActionResult> Create(UserVM vm, Guid roleId)
         {
             ViewBag.Roles = await roleManager.Roles.Where(x => !x.Name.Contains("Company")).ToListAsync();
             AppRole? role = await roleManager.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
@@ -88,7 +88,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Update(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -107,7 +107,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Update(int? id, UserVM newVM)
+        public async Task<IActionResult> Update(Guid? id, UserVM newVM)
         {
             #region Get
             if (id == null) return NotFound();
@@ -132,7 +132,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region ResetPassword
-        public async Task<IActionResult> ResetPassword(int? id)
+        public async Task<IActionResult> ResetPassword(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -144,7 +144,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> ResetPassword(int? id, ResetPasswordVM resetPassword)
+        public async Task<IActionResult> ResetPassword(Guid? id, ResetPasswordVM resetPassword)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -167,7 +167,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region RoleChange
-        public async Task<IActionResult> RoleChange(int? id)
+        public async Task<IActionResult> RoleChange(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -186,7 +186,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> RoleChange(int? id, string role)
+        public async Task<IActionResult> RoleChange(Guid? id, string role)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);

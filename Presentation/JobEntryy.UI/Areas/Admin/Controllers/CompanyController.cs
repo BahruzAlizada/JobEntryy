@@ -50,7 +50,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region ResetPassword
-        public async Task<IActionResult> ResetPassword(int? id)
+        public async Task<IActionResult> ResetPassword(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -62,7 +62,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> ResetPassword(int? id, ResetPasswordVM resetPassword)
+        public async Task<IActionResult> ResetPassword(Guid? id, ResetPasswordVM resetPassword)
         {
             if (id == null) return NotFound();
             AppUser? user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -85,7 +85,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Update(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? company = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -108,7 +108,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Update(int? id, CompanyVM vm)
+        public async Task<IActionResult> Update(Guid? id, CompanyVM vm)
         {
             if (id == null) return NotFound();
             AppUser? company = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -139,7 +139,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Premium
-        public async Task<IActionResult> Premium(int? id)
+        public async Task<IActionResult> Premium(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? company = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -151,7 +151,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public async Task<IActionResult> Activity(int? id)
+        public async Task<IActionResult> Activity(Guid? id)
         {
             if (id == null) return NotFound();
             AppUser? company = await userManager.Users.FirstOrDefaultAsync(x => x.Id == id);

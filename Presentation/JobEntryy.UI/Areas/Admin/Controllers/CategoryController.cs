@@ -1,7 +1,10 @@
 ﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.Abstract.Categories;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
@@ -12,10 +15,13 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly ICategoryReadRepository categoryReadRepository;
         private readonly ICategoryWriteRepository categoryWriteRepository;
-        public CategoryController(ICategoryReadRepository categoryReadRepository, ICategoryWriteRepository categoryWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public CategoryController(ICategoryReadRepository categoryReadRepository, ICategoryWriteRepository categoryWriteRepository,
+            UserManager<AppUser> userManager)
         {
             this.categoryReadRepository = categoryReadRepository;
             this.categoryWriteRepository = categoryWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -50,7 +56,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             Category? dbCategory = categoryReadRepository.Get(x => x.Id == id);
@@ -62,7 +68,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id,Category category)
+        public async Task<IActionResult> Update(Guid? id,Category category)
         {
             if (id == null) return NotFound();
             Category? dbCategory = categoryReadRepository.Get(x => x.Id == id);
@@ -78,6 +84,8 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             #endregion
 
             dbCategory.Name = category.Name;
+            dbCategory.Updated = DateTime.UtcNow.AddHours(4);
+            dbCategory.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
 
             categoryWriteRepository.Update(dbCategory);
             return RedirectToAction("Index");
@@ -85,7 +93,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             Category? category = categoryReadRepository.Get(x => x.Id == id);

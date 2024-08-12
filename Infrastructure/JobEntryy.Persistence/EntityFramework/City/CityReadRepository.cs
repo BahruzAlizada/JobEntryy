@@ -23,7 +23,8 @@ namespace JobEntryy.Persistence.EntityFramework
 
             if (!memoryCache.TryGetValue(cacheKey, out cities))
             {
-                cities = await context.Cities.Where(x => x.Status).OrderBy(x => x.Name).ToListAsync();
+                cities = await context.Cities.Where(x => x.Status).Select(x => new City { Id=x.Id,Name=x.Name}).
+                    OrderBy(x => x.Name).ToListAsync();
 
                 memoryCache.Set(cacheKey, cities, new MemoryCacheEntryOptions
                 {

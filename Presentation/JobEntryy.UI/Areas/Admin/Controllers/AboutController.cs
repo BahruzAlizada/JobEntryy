@@ -26,7 +26,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             About dbAbout = aboutReadRepository.Get(x => x.Id == id);
@@ -38,7 +38,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, About about)
+        public IActionResult Update(Guid? id, About about)
         {
             if (id == null) return NotFound();
             About dbAbout = aboutReadRepository.Get(x => x.Id == id);

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace JobEntryy.Domain.Identity
 {
-    public class AppUser : IdentityUser<int>
+    public class AppUser : IdentityUser<Guid>
     {
         public string Name { get; set; }
         public string? UserRole { get; set; }
@@ -14,9 +14,10 @@ namespace JobEntryy.Domain.Identity
         public string? Address { get; set; }
         public bool IsPremium { get; set; }
 
-        public List<Job> Jobs { get; set; }
+        public ICollection<Job> Jobs { get; set; }
 
         public bool Status { get; set; } = true;
         public DateTime Created { get; set; } = DateTime.UtcNow.AddHours(4);
+        public DateTime? Updated { get; set; }
     }
 }

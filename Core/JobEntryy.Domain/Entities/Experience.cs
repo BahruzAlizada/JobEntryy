@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobEntryy.Domain.Entities
 {
-    public class Experience : BaseEntity
+    public class Experience : EntityList
     {
         [Required(ErrorMessage = "Bu xana boş ola bilməz")]
         public string Name { get; set; }

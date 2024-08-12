@@ -1,5 +1,4 @@
-﻿
-using JobEntryy.Application.Abstract;
+﻿using JobEntryy.Application.Abstract;
 using JobEntryy.Application.ViewModels;
 using JobEntryy.Domain.Identity;
 using JobEntryy.Persistence.Concrete;

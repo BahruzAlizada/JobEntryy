@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace JobEntryy.UI.Controllers
 {
@@ -64,7 +62,7 @@ namespace JobEntryy.UI.Controllers
         #endregion
 
         #region Detail
-        public async Task<IActionResult> Detail(int? id)
+        public async Task<IActionResult> Detail(Guid? id)
         {
             if (id is null) return NotFound();
             Job job = await jobReadRepository.GetJobWithIncludeAsync(id);
@@ -112,6 +110,7 @@ namespace JobEntryy.UI.Controllers
             return View();
         }
         #endregion
+
 
 
 

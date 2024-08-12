@@ -5,6 +5,5 @@ namespace JobEntryy.Application.Abstract
 {
     public interface IExperienceWriteRepository : IWriteRepository<Experience>
     {
-        void Activity(Experience experience);
     }
 }

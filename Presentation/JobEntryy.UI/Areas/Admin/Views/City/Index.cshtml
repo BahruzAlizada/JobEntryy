@@ -15,7 +15,8 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Kateqoriya</th>
+                        <th>Şəhər</th>
+                        <th>Yenilənmə, İstifadəçi adı</th>
                         <th>Status</th>
                         <th style="text-align:right">Aksiyonlar</th>
                     </tr>
@@ -25,6 +26,17 @@
                     {
                         <tr>
                             <td>@item.Name</td>
+                            <td>
+                                @if (item.Updated is null)
+                                {
+                                    <span style="padding:6px 4px; background-color:red; color:white;">Dəyişiklik olmayıb</span>
+                                }
+                                else
+                                {
+                                    @item.Updated<br />
+                                    <a asp-controller="Users" asp-action="Index" asp-route-username="@item.ByChanged">@item.ByChanged</a>
+                                }
+                            </td>
                             <td>
                                 @if (item.Status)
                                 {

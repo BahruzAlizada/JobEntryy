@@ -3,7 +3,7 @@
 @foreach (Job item in Model)
 {
     var currentDate = DateTime.Today;
-    var createdDate = item.CreatedTime.Date;
+    var createdDate = item.Created.Date;
     var daysDifference = (currentDate - createdDate).Days;
 
     <div style="margin-bottom:2px;" class="box">
@@ -34,7 +34,7 @@
 
             <div class="box-col box-20 text-right">
                 <div class="datcl" style="display: inline-block; flex-direction: column;">
-                    <p class=datcl style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                    <p class=datcl style="margin-left:-40px;">@item.Created.ToString("dd") @item.Created.ToString("MMMM").Substring(0, 3)</p>
                 </div>
             </div>
 

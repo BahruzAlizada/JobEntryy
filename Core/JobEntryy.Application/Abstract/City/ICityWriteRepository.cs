@@ -5,6 +5,5 @@ namespace JobEntryy.Application.Abstract
 {
     public interface ICityWriteRepository : IWriteRepository<City>
     {
-        void Activity(City city);
     }
 }

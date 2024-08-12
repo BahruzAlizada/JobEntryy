@@ -99,7 +99,7 @@ namespace JobEntryy.UI.Controllers
         #endregion
 
         #region CompanyVacanciesLoadMore
-        public async Task<IActionResult> CompanyVacanciesLoadMore(int userId, int skipCount, int take)
+        public async Task<IActionResult> CompanyVacanciesLoadMore(Guid userId, int skipCount, int take)
         {
             int companyJobsCount = await jobReadRepository.CompanyJobCountAsync(userId);
 

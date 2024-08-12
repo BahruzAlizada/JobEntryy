@@ -11,7 +11,7 @@ namespace JobEntryy.Persistence.EntityFramework
 {
     public class JobReadRepository : ReadRepository<Job>, IJobReadRepository
     {
-        public async Task<int> CompanyJobCountAsync(int userId)
+        public async Task<int> CompanyJobCountAsync(Guid userId)
         {
             using var context = new Context();
 
@@ -19,13 +19,13 @@ namespace JobEntryy.Persistence.EntityFramework
             return jobCount;
         }
 
-        public async Task<List<Job>> GetAllJobsWithPageAsync(int? companyId, int? typeId, int? catId, int? cityId, int? expId, int take, int page)
+        public async Task<List<Job>> GetAllJobsWithPageAsync(Guid? companyId, Guid? typeId, Guid? catId, Guid? cityId, Guid? expId, int take, int page)
         {
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Include(x => x.User).Include(x=>x.Category).
                 Include(x=>x.JobType).Include(x=>x.City).Include(x=>x.Experience).Include(x=>x.JobDetail).
-                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.CreatedTime).AsQueryable();
+                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.Created).AsQueryable();
             if (typeId is not null)
                 jobs = jobs.Where(x => x.JobTypeId == typeId);
             if (catId is not null)
@@ -38,29 +38,29 @@ namespace JobEntryy.Persistence.EntityFramework
             return await jobs.Skip((page - 1) * take).Take(take).ToListAsync();
         }
 
-        public async Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(int userId, int take)
+        public async Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(Guid userId, int take)
         {
             using var context = new Context();
 
-            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.CreatedTime).
+            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.Created).
                 Take(take).ToListAsync();
             return jobs;
         }
 
-        public async Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId, int skipCount, int take)
+        public async Task<List<Job>> GetCompanyJobsLoadMoreAsync(Guid userId, int skipCount, int take)
         {
             using var context = new Context();
 
-            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.CreatedTime).
+            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.Created).
                 Skip(skipCount).Take(take).ToListAsync();
             return jobs;
         }
 
-        public async Task<List<Job>> GetCompanyJobsWithTakeAsync(int userId, int take)
+        public async Task<List<Job>> GetCompanyJobsWithTakeAsync(Guid userId, int take)
         {
             using var context = new Context();
 
-            List<Job> jobs = await context.Jobs.Where(x=>x.UserId==userId && x.Status).OrderByDescending(x=>x.CreatedTime).
+            List<Job> jobs = await context.Jobs.Where(x=>x.UserId==userId && x.Status).OrderByDescending(x=>x.Created).
                 Take(take).ToListAsync();
             return jobs;
         }
@@ -79,7 +79,7 @@ namespace JobEntryy.Persistence.EntityFramework
 
             List<Job> jobs = await context.Jobs.Where(x => x.DeadLine.Date < DateTime.Today.Date).Include(x => x.User).Include(x => x.Category).
                 Include(x => x.JobType).Include(x => x.City).Include(x => x.Experience).Include(x => x.JobDetail).
-                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.CreatedTime).
+                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.Created).
                 Skip((page - 1) * take).Take(take).ToListAsync();
             return jobs;
         }
@@ -97,7 +97,7 @@ namespace JobEntryy.Persistence.EntityFramework
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
-                ThenByDescending(x=>x.CreatedTime).Take(take).AsQueryable();
+                ThenByDescending(x=>x.Created).Take(take).AsQueryable();
 
             if(filter.typeId is not null)
                 jobs = jobs.Where(x=>x.JobTypeId == filter.typeId);
@@ -130,7 +130,7 @@ namespace JobEntryy.Persistence.EntityFramework
             return jobsCount;
         }
 
-        public async Task<Job> GetJobWithIncludeAsync(int? id)
+        public async Task<Job> GetJobWithIncludeAsync(Guid? id)
         {
             using var context = new Context();
 
@@ -144,7 +144,7 @@ namespace JobEntryy.Persistence.EntityFramework
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
-                ThenByDescending(x => x.CreatedTime).Skip(skipCount).Take(take).AsQueryable();
+                ThenByDescending(x => x.Created).Skip(skipCount).Take(take).AsQueryable();
 
             if (filter.typeId is not null)
                 jobs = jobs.Where(x => x.JobTypeId == filter.typeId);
@@ -164,7 +164,7 @@ namespace JobEntryy.Persistence.EntityFramework
 
             List<Job> jobs = await context.Jobs.Where(x=>x.IsPremium).Include(x => x.User).Include(x => x.Category).
                 Include(x => x.JobType).Include(x => x.City).Include(x => x.Experience).Include(x => x.JobDetail).
-                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.CreatedTime).
+                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.Created).
                 Skip((page-1)*take).Take(take).ToListAsync();
             return jobs;
         }

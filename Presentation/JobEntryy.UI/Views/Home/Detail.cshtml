@@ -180,7 +180,7 @@
 
 @{
     var currentDate = DateTime.Today;
-    var createdDate = Model.CreatedTime.Date;
+    var createdDate = Model.Created.Date;
     var daysDifference = (currentDate - createdDate).Days;
 }
 
@@ -218,7 +218,7 @@
 
                 <div class="box-col box-20 text-right">
                     <div class="datcl" style="display: inline-block; flex-direction: column;">
-                        <p class="datcl" style="margin-left:-40px;">@Model.CreatedTime.ToString("dd") @Model.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                        <p class="datcl" style="margin-left:-40px;">@Model.Created.ToString("dd") @Model.Created.ToString("MMMM").Substring(0, 3)</p>
                     </div>
                 </div>
 

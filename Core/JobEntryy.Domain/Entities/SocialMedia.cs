@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobEntryy.Domain.Entities
 {
-    public class SocialMedia : BaseEntity
+    public class SocialMedia : EntityList
     {
         [Required(ErrorMessage = "Bu xana boş ola bilməz")]
         public string Icon { get; set; }

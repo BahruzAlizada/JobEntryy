@@ -7,19 +7,19 @@ namespace JobEntryy.Application.Abstract
 {
     public interface IJobReadRepository : IReadRepository<Job>
     {
-        Task<List<Job>> GetCompanyJobsWithTakeAsync(int userId, int take);
-        Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(int userId, int take);
-        Task<List<Job>> GetCompanyJobsLoadMoreAsync(int userId,int skipCount, int take);
-        Task<int> CompanyJobCountAsync(int userId);
+        Task<List<Job>> GetCompanyJobsWithTakeAsync(Guid userId, int take);
+        Task<List<Job>> GetCompanyIncludeJobsWithTakeAsync(Guid userId, int take);
+        Task<List<Job>> GetCompanyJobsLoadMoreAsync(Guid userId,int skipCount, int take);
+        Task<int> CompanyJobCountAsync(Guid userId);
 
-        Task<Job> GetJobWithIncludeAsync(int? id);
+        Task<Job> GetJobWithIncludeAsync(Guid? id);
 
         Task<List<Job>> GetJobsAsync(FilterVM filter, int take);
         Task<List<Job>> GetLoadMoreJobsAsync(FilterVM filter, int skipCount, int take);
         Task<int> GetJobsCountAsync(FilterVM filter);
 
 
-        Task<List<Job>> GetAllJobsWithPageAsync(int? companyId, int? typeId, int? catId, int? cityId, int? expId, int take, int page);
+        Task<List<Job>> GetAllJobsWithPageAsync(Guid? companyId, Guid? typeId, Guid? catId, Guid? cityId, Guid? expId, int take, int page);
 
 
         Task<List<Job>> GetPremiumJobsWithPageAsync(int take, int page);

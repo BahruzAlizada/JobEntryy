@@ -8,7 +8,7 @@ namespace JobEntryy.Application.ViewModels
 {
     public  class CompanyVM
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Image { get; set; }
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage ="Bu xana boş ola bilməz")]

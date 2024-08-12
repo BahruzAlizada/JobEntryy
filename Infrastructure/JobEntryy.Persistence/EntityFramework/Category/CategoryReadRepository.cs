@@ -26,7 +26,7 @@ namespace JobEntryy.Persistence.EntityFramework
 
             if(!memoryCache.TryGetValue(cachedKey, out categories))
             {
-                categories = await context.Categories.Where(x => x.Status).ToListAsync();
+                categories = await context.Categories.Where(x => x.Status).Select(x=> new Category { Name = x.Name, Id = x.Id}).ToListAsync();
 
                 memoryCache.Set(cachedKey, cachedKey, new MemoryCacheEntryOptions
                 {

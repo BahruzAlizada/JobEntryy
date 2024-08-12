@@ -42,7 +42,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             SocialMedia dbSocialMedia = socialMediaReadRepository.Get(x => x.Id == id);
@@ -54,7 +54,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, SocialMedia socialMedia)
+        public IActionResult Update(Guid? id, SocialMedia socialMedia)
         {
             if (id == null) return NotFound();
             SocialMedia dbSocialMedia = socialMediaReadRepository.Get(x => x.Id == id);
@@ -69,7 +69,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null) return NotFound();
             SocialMedia socialMedia = socialMediaReadRepository.Get(x => x.Id == id);
@@ -81,7 +81,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             SocialMedia socialMedia = socialMediaReadRepository.Get(x => x.Id == id);

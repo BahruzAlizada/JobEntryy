@@ -30,7 +30,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Detail
-        public IActionResult Detail(int? id)
+        public IActionResult Detail(Guid? id)
         {
             if (id == null) return NotFound();
             Contact contact = contactReadRepository.Get(x => x.Id == id);
@@ -41,7 +41,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null) return NotFound();
             Contact contact = contactReadRepository.Get(x => x.Id == id);

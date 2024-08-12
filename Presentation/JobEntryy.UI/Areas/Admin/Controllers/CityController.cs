@@ -1,6 +1,9 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 
@@ -12,10 +15,13 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly ICityReadRepository cityReadRepository;
         private readonly ICityWriteRepository cityWriteRepository;
-        public CityController(ICityReadRepository cityReadRepository, ICityWriteRepository cityWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public CityController(ICityReadRepository cityReadRepository, ICityWriteRepository cityWriteRepository,
+            UserManager<AppUser> userManager)
         {
             this.cityReadRepository = cityReadRepository;
             this.cityWriteRepository = cityWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -54,7 +60,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             City dbCity = cityReadRepository.Get(x => x.Id == id);
@@ -66,7 +72,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, City city)
+        public async Task<IActionResult> Update(Guid? id, City city)
         {
             if (id == null) return NotFound();
             City dbCity = cityReadRepository.Get(x => x.Id == id);
@@ -80,6 +86,8 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             }
 
             dbCity.Name = city.Name;
+            dbCity.Updated = DateTime.UtcNow.AddHours(4);
+            dbCity.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
 
             cityWriteRepository.Update(dbCity);
             return RedirectToAction("Index");
@@ -87,7 +95,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             City city = cityReadRepository.Get(x => x.Id == id);

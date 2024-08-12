@@ -45,7 +45,7 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         #endregion
 
         #region ListMore
-        public async Task<IActionResult> ListMore(int userId, int skipCount)
+        public async Task<IActionResult> ListMore(Guid userId, int skipCount)
         {
             int companyJobsCount = await jobReadRepository.CompanyJobCountAsync(userId);
 
@@ -74,7 +74,7 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Create(Job job, int catId, int cityId, int expId, int typeId)
+        public async Task<IActionResult> Create(Job job, Guid catId, Guid cityId, Guid expId, Guid typeId)
         {
             using var context = new Context();
 

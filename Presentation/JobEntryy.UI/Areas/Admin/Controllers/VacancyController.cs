@@ -31,7 +31,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         }
 
         #region Index
-        public async Task<IActionResult> Index(int? companyId, int? typeId, int? catId, int? cityId, int? expId, int page = 1)
+        public async Task<IActionResult> Index(Guid? companyId, Guid? typeId, Guid? catId, Guid? cityId, Guid? expId, int page = 1)
         {
             double take = 15;
             ViewBag.PageCount = await jobReadRepository.GetPagedCountAsync(take);
@@ -69,7 +69,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Update(Guid? id)
         {
             using var context = new Context();
 
@@ -88,7 +88,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Update(int? id, Job job, int typeId, int catId, int cityId, int expId)
+        public async Task<IActionResult> Update(Guid? id, Job job, Guid typeId, Guid catId, Guid cityId, Guid expId)
         {
             using var context = new Context();
 
@@ -107,7 +107,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
             dbjob.CategoryId = catId;
             dbjob.CityId = cityId;
             dbjob.ExperienceId = expId;
-            job.CreatedTime = dbjob.CreatedTime;
+            job.Created = dbjob.Created;
             job.PremiumDate = dbjob.PremiumDate;
             job.IsPremium = dbjob.IsPremium;
             job.Status = dbjob.Status;
@@ -128,7 +128,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region PremiumJob
-        public IActionResult PremiumJob(int? id)
+        public IActionResult PremiumJob(Guid? id)
         {
             if (id == null) return NotFound();
             Job? job = jobReadRepository.Get(x => x.Id == id);
@@ -140,7 +140,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> PremiumJob(int? id,DateTime date)
+        public async Task<IActionResult> PremiumJob(Guid? id,DateTime date)
         {
             if (id == null) return NotFound();
             Job? job = jobReadRepository.Get(x => x.Id == id);
@@ -158,7 +158,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region PremiumDelete
-        public IActionResult PremiumDelete(int? id)
+        public IActionResult PremiumDelete(Guid? id)
         {
             if (id == null) return NotFound();
             Job? job = jobReadRepository.Get(x => x.Id == id);
@@ -170,7 +170,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             Job? job = jobReadRepository.Get(x => x.Id == id);
@@ -190,7 +190,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null) return NotFound();
             Job? job = jobReadRepository.Get(x => x.Id == id);

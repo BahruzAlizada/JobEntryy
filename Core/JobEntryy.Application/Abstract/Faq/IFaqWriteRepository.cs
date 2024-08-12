@@ -5,6 +5,5 @@ namespace JobEntryy.Application.Abstract
 {
     public interface IFaqWriteRepository : IWriteRepository<Faq>
     {
-        void Activity(Faq faq);
     }
 }

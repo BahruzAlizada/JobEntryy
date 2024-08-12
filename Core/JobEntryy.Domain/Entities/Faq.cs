@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobEntryy.Domain.Entities
 {
-    public class Faq : BaseEntity
+    public class Faq : EntityList
     {
         [Required(ErrorMessage ="Bu xana boş ola bilməz")]
         public string Quetsion { get; set; }

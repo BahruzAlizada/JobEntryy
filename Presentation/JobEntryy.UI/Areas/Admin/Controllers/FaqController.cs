@@ -1,6 +1,9 @@
 ﻿using JobEntryy.Application.Abstract;
+using JobEntryy.Application.Extensions;
 using JobEntryy.Domain.Entities;
+using JobEntryy.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobEntryy.UI.Areas.Admin.Controllers
@@ -11,10 +14,12 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
     {
         private readonly IFaqReadRepository faqReadRepository;
         private readonly IFaqWriteRepository faqWriteRepository;
-        public FaqController(IFaqReadRepository faqReadRepository, IFaqWriteRepository faqWriteRepository)
+        private readonly UserManager<AppUser> userManager;
+        public FaqController(IFaqReadRepository faqReadRepository, IFaqWriteRepository faqWriteRepository, UserManager<AppUser> userManager)
         {
             this.faqReadRepository = faqReadRepository;
             this.faqWriteRepository = faqWriteRepository;
+            this.userManager = userManager;
         }
 
         #region Index
@@ -42,7 +47,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Update
-        public IActionResult Update(int? id)
+        public IActionResult Update(Guid? id)
         {
             if (id == null) return NotFound();
             Faq? dbFaq = faqReadRepository.Get(x => x.Id == id);
@@ -54,7 +59,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(int? id, Faq faq)
+        public async Task<IActionResult> Update(Guid? id, Faq faq)
         {
             if (id == null) return NotFound();
             Faq? dbFaq = faqReadRepository.Get(x => x.Id == id);
@@ -62,6 +67,8 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
 
             dbFaq.Answer = faq.Answer;
             dbFaq.Quetsion = faq.Quetsion;
+            dbFaq.Updated = DateTime.UtcNow.AddHours(4);
+            dbFaq.ByChanged = await userManager.FindUserUsernameAsync(User.Identity.Name);
 
             faqWriteRepository.Update(dbFaq);
             return RedirectToAction("Index");
@@ -69,7 +76,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null) return NotFound();
             Faq? faq = faqReadRepository.Get(x => x.Id == id);
@@ -81,7 +88,7 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         #endregion
 
         #region Activity
-        public IActionResult Activity(int? id)
+        public IActionResult Activity(Guid? id)
         {
             if (id == null) return NotFound();
             Faq? faq = faqReadRepository.Get(x => x.Id == id);

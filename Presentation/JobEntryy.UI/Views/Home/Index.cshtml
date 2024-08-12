@@ -309,7 +309,7 @@
                     @foreach (Job item in Model.Jobs)
                     {
                         var currentDate = DateTime.Today;
-                        var createdDate = item.CreatedTime.Date;
+                        var createdDate = item.Created.Date;
                         var daysDifference = (currentDate - createdDate).Days;
 
                         <div style="margin-bottom:2px;" class="box">
@@ -340,7 +340,7 @@
 
                                 <div class="box-col box-20 text-right">
                                     <div class="datcl" style="display: inline-block; flex-direction: column;">
-                                        <p class=datcl style="margin-left:-40px;">@item.CreatedTime.ToString("dd") @item.CreatedTime.ToString("MMMM").Substring(0, 3)</p>
+                                        <p class=datcl style="margin-left:-40px;">@item.Created.ToString("dd") @item.Created.ToString("MMMM").Substring(0, 3)</p>
                                     </div>
                                 </div>
 
@@ -379,6 +379,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
     <script asp-append-version="true">
