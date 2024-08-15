@@ -24,9 +24,10 @@ namespace JobEntryy.UI.Areas.Admin.Controllers
         }
 
         #region Index
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string username)
         {
-            List<AppUser> users = await userManager.Users.Where(x => !x.UserRole.Contains("Company")).ToListAsync();
+            List<AppUser> users = await userManager.Users.Where(x => !x.UserRole.Contains("Company")
+            && (username==null || x.UserName.Contains(username))).ToListAsync();
             List<UserVM> userVM = new List<UserVM>();
 
             foreach (AppUser item in users)

@@ -15,6 +15,77 @@ namespace JobEntryy.Persistence.EntityFramework.Company
             this.userManager = userManager;
         }
 
+        public async Task<List<CompanyVM>> GetActiveCompaniesAsync(string search, int take)
+        {
+            using var context = new Context();
+
+            IQueryable<AppUser> users  = userManager.Users.Where(x=>x.Status && x.UserRole.Contains("Company")).
+                OrderByDescending(x=>x.IsPremium).ThenByDescending(x=>x.Jobs.Count).AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                users = users.Where(x => x.Name.Contains(search));
+
+            List<AppUser> userList = await users.Take(take).ToListAsync();
+            List<CompanyVM> companyVMs = new List<CompanyVM>();
+            foreach (var item in userList)
+            {
+                CompanyVM vm = new CompanyVM
+                {
+                    Id = item.Id,
+                    Image = item.Image,
+                    Name = item.Name,
+                    UserName = item.UserName,
+                    IsPremium = item.IsPremium,
+                    JobsCount = await context.Jobs.Where(x=>x.Status && x.UserId==item.Id).CountAsync()
+                };
+                companyVMs.Add(vm);
+            }
+
+            return companyVMs;
+        }
+
+        public async Task<int> GetActiveCompaniesCountAsync(string search)
+        {
+
+            IQueryable<AppUser> users = userManager.Users.Where(x => x.Status && x.UserRole.Contains("Company")).AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+                users = users.Where(x => x.Name.Contains(search));
+
+            int companyCount = await users.CountAsync();
+
+            return companyCount;
+        }
+
+        public async Task<List<CompanyVM>> GetActiveLoadMoreCompaniesAsync(string search, int skipCount, int take)
+        {
+            using var context = new Context();
+
+            IQueryable<AppUser> users = userManager.Users.Where(x => x.Status && x.UserRole.Contains("Company")).
+                OrderByDescending(x => x.IsPremium).ThenByDescending(x => x.Jobs.Count).AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                users = users.Where(x => x.Name.Contains(search));
+
+            List<AppUser> userList = await users.Skip(skipCount).Take(take).ToListAsync();
+            List<CompanyVM> companies = new List<CompanyVM>();
+
+            foreach (var item in userList)
+            {
+                CompanyVM vm = new CompanyVM
+                {
+                    Id = item.Id,
+                    Image = item.Image,
+                    Name = item.Name,
+                    UserName = item.UserName,
+                    IsPremium = item.IsPremium,
+                    JobsCount = await context.Jobs.Where(x => x.Status && x.UserId == item.Id).CountAsync()
+                };
+                companies.Add(vm);
+            };
+
+            return companies;
+        }
+
         public async Task<List<CompanyVM>> GetAllCompaniesWithPageAsync(int take, int page, string search)
         {
             using var context = new Context();

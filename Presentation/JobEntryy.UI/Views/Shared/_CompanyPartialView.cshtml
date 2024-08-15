@@ -8,7 +8,7 @@
             <div>
                 <img src="~/assets/img/company/@item.Image" class=" w-px-40 h-auto rounded-circle">
             </div>
-            <h3><a asp-controller="Companies" asp-action="Detail" asp-route-username="@item.UserName">@item.Name</a></h3>
+            <h3><a asp-controller="Companies" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></h3>
             <p>@item.JobsCount vakansiya</p>
             @if (item.IsPremium)
             {

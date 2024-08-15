@@ -168,7 +168,7 @@
 
         <hr />
         <div>
-            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="Detail" asp-route-username="@Model[0].User.UserName">@localizer["Şirkət Haqqında"]</a>
+            <a class="btn btn-success text-white" asp-controller="Companies" asp-action="Detail" asp-route-id="@Model[0].User.Id">@localizer["Şirkət Haqqında"]</a>
         </div>
         <hr />
 
@@ -226,14 +226,14 @@
 
 @section Scripts{
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script asp-append-version="true" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script asp-append-version="true" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
     <script asp-append-version="true">
-        let skip = 15
+        let skip = 3
         let productsCount = $("#loadMore").next().val()
-        let appUserId = @Model[0].UserId
+        let appUserId = @ViewBag.UserId
 
         function checkLoadMore() {
             if (productsCount <= skip) {
@@ -257,7 +257,7 @@
 
                 success: function (res) {
                     $("#myproduct").append(res)
-                    skip += 15;
+                    skip += 3;
 
                     checkLoadMore();
                 }

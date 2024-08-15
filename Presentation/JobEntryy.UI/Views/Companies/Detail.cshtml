@@ -46,7 +46,7 @@
         @if (Model.JobsCount != 0)
         {
             <div>
-                <a class="btn btn-success text-white" asp-controller="Companies" asp-action="CompanyVacancies" asp-route-username="@Model.UserName">@localizer["Vakansiyalar"]</a>
+                <a class="btn btn-success text-white" asp-controller="Companies" asp-action="CompanyVacancies" asp-route-id="@Model.Id">@localizer["Vakansiyalar"]</a>
             </div>
             <hr />
         }

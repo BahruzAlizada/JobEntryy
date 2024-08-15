@@ -17,14 +17,14 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Logger log = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("logs/log.txt")
-    .WriteTo.MSSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;", "Logs",
-    autoCreateSqlTable: true)
-    .CreateLogger();
+//Logger log = new LoggerConfiguration()
+//    .WriteTo.Console()
+//    .WriteTo.File("logs/log.txt")
+//    .WriteTo.MSSqlServer("Server=DESKTOP-OK3QKVJ;Database=JobEntryyDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true;Integrated Security=True;", "Logs",
+//    autoCreateSqlTable: true)
+//    .CreateLogger();
 
-builder.Host.UseSerilog(log);
+//builder.Host.UseSerilog(log);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -79,7 +79,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

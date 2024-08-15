@@ -30,6 +30,7 @@
                         <th>Deadline</th>
                         <th>Premium</th>
                         <th>Premium bitmə tarixi</th>
+                        <th>Yenilənmə, İstifadəçi adı</th>
                         <th>Status</th>
                         <th style="text-align:right">Aksiyonlar</th>
                     </tr>
@@ -68,6 +69,17 @@
                                 }
                             </td>
                             <td>@item.PremiumDate</td>
+                            <td>
+                                @if (item.Updated is null)
+                                {
+                                    <span style="padding:6px 4px; background-color:red; color:white;">Dəyişiklik olmayıb</span>
+                                }
+                                else
+                                {
+                                    @item.Updated<br />
+                                    <a asp-controller="User" asp-action="Index" asp-route-username="@item.ByChanged">@item.ByChanged</a>
+                                }
+                            </td>
                             <td>
                                 @if (item.Status)
                                 {

@@ -36,9 +36,10 @@ namespace JobEntryy.UI.Areas.Company.Controllers
         {
             AppUser? user = await userManager.FindByNameAsync(User.Identity.Name);
             if (user == null) return BadRequest();
-            
 
+            ViewBag.UserId = user.Id;
             ViewBag.JobsCount = await jobReadRepository.CompanyJobCountAsync(user.Id);
+
             List<Job> jobs = await jobReadRepository.GetCompanyIncludeJobsWithTakeAsync(user.Id, take:15);
             return View(jobs);
         }

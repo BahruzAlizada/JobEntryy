@@ -143,7 +143,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-md-8">
-            <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
+           @*  <div class="d-flex align-items-start align-items-sm-center gap-4 my-2">
                 <img src="~/assets/img/company/@Model[0].User.Image"
                      alt="user-avatar"
                      class="d-block rounded"
@@ -164,7 +164,7 @@
                 </h4>
             </div>
 
-            <hr />
+            <hr /> *@
 
             <div id="myproduct" class="my-3">
                 @foreach (Job item in Model)
@@ -202,11 +202,17 @@
                 }
             </div>
 
-            <div class="col-12 justify-content-center my-4 d-flex">
-                <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
-                <input type="hidden" value="@ViewBag.JobsCount" />
-            </div>
-
+            @if (Model.Count <= 14)
+            {
+                
+            }
+            else
+            {
+                <div class="col-12 justify-content-center my-4 d-flex">
+                    <a id="loadMore" class="btn btn-primary text-white">Daha Çox</a>
+                    <input type="hidden" value="@ViewBag.JobsCount" />
+                </div>
+            }
         </div>
 
 
@@ -228,7 +234,7 @@
     <script asp-append-version="true">
         let skip = 15
         let productsCount = $("#loadMore").next().val()
-        let appUserId = @Model[0].UserId
+        let appUserId = @ViewBag.UserId;
 
             function checkLoadMore() {
                 if (productsCount <= skip) {

@@ -7,7 +7,7 @@
     {
         <a class="btn btn-success text-white" asp-area="Company" asp-controller="Profile" asp-action="Index">@localizer["Şirkət paneli"]</a>
     }
-    if (User.IsInRole("Admin"))
+    if (!User.IsInRole("Company"))
     {
         <a class="btn btn-success text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Panel</a>
     }

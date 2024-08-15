@@ -42,8 +42,8 @@ namespace JobEntryy.Persistence.EntityFramework
         {
             using var context = new Context();
 
-            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.Created).
-                Take(take).ToListAsync();
+            List<Job> jobs = await context.Jobs.Include(x=>x.User).Where(x => x.UserId == userId && x.Status).
+                OrderByDescending(x => x.IsPremium).ThenByDescending(x=>x.Created).Take(take).ToListAsync();
             return jobs;
         }
 
@@ -97,7 +97,7 @@ namespace JobEntryy.Persistence.EntityFramework
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
-                ThenByDescending(x=>x.Created).Take(take).AsQueryable();
+                ThenByDescending(x=>x.Created).AsQueryable();
 
             if(filter.typeId is not null)
                 jobs = jobs.Where(x=>x.JobTypeId == filter.typeId);
@@ -108,7 +108,7 @@ namespace JobEntryy.Persistence.EntityFramework
             if (filter.expId is not null)
                 jobs = jobs.Where(x => x.ExperienceId == filter.expId);
 
-            return await jobs.Where(x => (filter.search == null || x.JobName.Contains(filter.search))).ToListAsync();
+            return await jobs.Where(x => (filter.search == null || x.JobName.Contains(filter.search))).Take(take).ToListAsync();
         }
 
         public async Task<int> GetJobsCountAsync(FilterVM filter)
@@ -144,7 +144,7 @@ namespace JobEntryy.Persistence.EntityFramework
             using var context = new Context();
 
             IQueryable<Job> jobs = context.Jobs.Where(x => x.Status).Include(x => x.User).OrderByDescending(x => x.IsPremium).
-                ThenByDescending(x => x.Created).Skip(skipCount).Take(take).AsQueryable();
+                ThenByDescending(x => x.Created).AsQueryable();
 
             if (filter.typeId is not null)
                 jobs = jobs.Where(x => x.JobTypeId == filter.typeId);
@@ -155,7 +155,7 @@ namespace JobEntryy.Persistence.EntityFramework
             if (filter.expId is not null)
                 jobs = jobs.Where(x => x.ExperienceId == filter.expId);
            
-            return await jobs.Where(x=>(filter.search==null || x.JobName.Contains(filter.search))).ToListAsync();
+            return await jobs.Where(x=>(filter.search==null || x.JobName.Contains(filter.search))).Skip(skipCount).Take(take).ToListAsync();
         }
 
         public async Task<List<Job>> GetPremiumJobsWithPageAsync(int take, int page)
